@@ -1,3 +1,3 @@
-# Jack-in-Space
+# Jack in Space
 
-Put description here
+Jack in Space ist ein spannendes Videospiel, das die Spieler auf ein episches Weltraumabenteuer mitnimmt. Als junger Weltraumpilot Jack müssen Sie durch tückische Asteroidenfelder und von Trümmern übersäte Umlaufbahnen navigieren, um gefährlichen Weltraumschrott einzusammeln und zu zerstören, der unseren Planeten bedroht. Mit atemberaubender Grafik, fesselndem Gameplay und einer starken Botschaft der Verantwortung für die Umwelt inspiriert Jack in Space die Spieler dazu, etwas in der realen Welt zu bewirken, indem sie Weltraumschrott beseitigen und unseren Planeten für kommende Generationen schützen. Mit seiner einzigartigen Handlung, innovativen Spielmechanik und dem Schwerpunkt auf Nachhaltigkeit setzt Jack in Space einen neuen Standard für sozial bewusstes Spielen und verspricht, bei Spielern jeden Alters ein Hit zu werden. Begleite Jack auf seiner Mission, das Universum zu retten, und werde selbst zum Helden, indem du für eine sauberere, sicherere Zukunft für alle kämpfst.
