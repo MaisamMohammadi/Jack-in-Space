@@ -1,6 +1,6 @@
 <template>
   <div class="mt-14">
-    <WelcomeComp title="Hello There"></WelcomeComp>
+    <WelcomeComp title="Maisam"></WelcomeComp>
     <div class="mt-8 text-xl">
       <span>{{ store.homeContent }}</span>
     </div>
