@@ -1,27 +1,33 @@
 <template>
-  <div class="container mx-auto text-center window">
-    <NavbarComp></NavbarComp>
-    <RouterView />
-    <img src="./Spaceship_Model.png" alt="" :class="spaceship ">
+  <div class="field cursor-none" @mousemove="changingCoordination">
+      <img src="./Spaceship_Model.png" alt="spaceship" class="w-[100px] h-[100px] absolute" 
+      :style="{
+        'left': x + 'px', 'top': y + 'px'}">
+      <p>Horizontale Position: {{ x }} px</p>
+      <p>Vertikale Position: {{ y }} px</p>
+    <!-- <NavbarComp></NavbarComp>
+    <RouterView /> -->
+    
+    
   </div>
 </template>
 <script setup>
-import { ref } from 'vue' 
+import { ref, computed } from 'vue' 
 import NavbarComp from '@/components/NavbarComp.vue';
 import { RouterView } from 'vue-router';
 
-const left = ref(50);
-const right = ref(50);
+let x = ref(0);
+let y = ref(0);
+
+const changingCoordination = (e) => {
+  x.value = e.x;
+  y.value = e.y;
+}
 
 </script>
 <style>
-.window{
-  cursor: url(https://www.svgrepo.com/show/488688/space-shuttle.svg), auto !important;
-}
-.spaceship{
-  width: 100px;
-  height: 100px;
-  left: 50px;
-  top: 50px;
+.field{
+  width: 100vw;
+  height: 100vh;
 }
 </style>
