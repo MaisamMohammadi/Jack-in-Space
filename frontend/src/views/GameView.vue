@@ -9,7 +9,7 @@
 import Phaser from 'phaser';
 import spaceship from '@/assets/images/spaceship_Modell.png';
 import trash from '@/assets/images/trash_Modell.png';
-
+import laser from '@/assets/images/Laser_Model.png';
 
 class gameScene extends Phaser.Scene{
     constructor(){
@@ -19,19 +19,28 @@ class gameScene extends Phaser.Scene{
     preload(){
         this.load.image('trash', trash);
         this.load.image('spaceship', spaceship);
+        this.load.image('laser', laser);
     }
 
     create(){
+
         this.ship = this.add.image(100, 200, 'spaceship');
         this.trash1 = this.add.image(400, 50, 'trash');
+        this.laser = this.add.image(300, 400, 'laser');
+
+        this.lasers = this.add.group();
+
+        this.input.mouse.disableContextMenu();
+        
     }
 
     update(){
         this.moveTrash(this.trash1);
         this.moveShip(this.ship);
+        
     }
 
-    moveShip(ship){-
+    moveShip(ship){
 
         this.input.on('pointermove', function (pointer) {
             ship.x = pointer.x;
@@ -41,7 +50,7 @@ class gameScene extends Phaser.Scene{
     }
 
     moveTrash(trash){
-        trash.y += 4;
+        trash.y += 3;
 
         if(trash.y > config.height + 100)
             this.resetTrashPosition(trash)
@@ -53,11 +62,19 @@ class gameScene extends Phaser.Scene{
     }
 } 
 
+
+
 const config = {
     width: 800,
     height: 600,
     backgroundColor: 0x000000,
-    scene: [gameScene]
+    scene: [gameScene],
+    physics:{
+        default: "arcade",
+        arcade: {
+            debug: false
+        }
+    }
 }
   
 // eslint-disable-next-line no-unused-vars
