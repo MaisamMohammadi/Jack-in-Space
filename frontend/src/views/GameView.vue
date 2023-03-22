@@ -41,7 +41,7 @@ class gameScene extends Phaser.Scene{
     }
 
     moveTrash(trash){
-        trash.y += 2;
+        trash.y += 4;
 
         if(trash.y > config.height + 100)
             this.resetTrashPosition(trash)
