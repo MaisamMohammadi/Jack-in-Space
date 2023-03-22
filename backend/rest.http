@@ -1,4 +1,22 @@
-GET http://localhost:3000/movies
+GET http://localhost:5000/account
 ###
-GET http://localhost:3000/movies/3
+GET http://localhost:5000/account?username=admin&password=5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+###
+POST http://localhost:5000/account
+Content-Type: application/json
+
+{
+    "username": "test",
+    "password": "test",
+    "age": 8
+}
+###
+PATCH http://localhost:5000/account/2
+Content-Type: application/json
+
+{
+    "age": 9
+}
+###
+DELETE http://localhost:5000/account/2
 ###
