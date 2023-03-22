@@ -22,12 +22,36 @@ class gameScene extends Phaser.Scene{
     }
 
     create(){
-        this.add.image(100, 200, 'spaceship');
-        this.add.image(50, 50, 'trash');
+        this.ship = this.add.image(100, 200, 'spaceship');
+        this.trash1 = this.add.image(400, 50, 'trash');
     }
 
-    movetrash(trash, speed){
-        trash.y = speed;
+    update(){
+        this.moveTrash(this.trash1);
+        this.moveShip(this.ship);
+    }
+
+    moveShip(ship){
+        let xPosition;
+        let yPosition;
+        addEventListener('mousemove', (event) => {
+            ship.x = event.x;
+            ship.y = event.y;
+            console.log(xPosition, yPosition);
+        });
+        
+    }
+
+    moveTrash(trash){
+        trash.y += 2;
+
+        if(trash.y > config.height + 100)
+            this.resetTrashPosition(trash)
+    }
+
+    resetTrashPosition(trash){
+        trash.y = -50;
+        trash.x = Phaser.Math.Between(50, config.width - 100);
     }
 } 
 
@@ -38,8 +62,10 @@ const config = {
     scene: [gameScene]
 }
   
+// eslint-disable-next-line no-unused-vars
 let game = new Phaser.Game(config);
-  
+
+
 
 </script>
 <style>
