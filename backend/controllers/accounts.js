@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 
 const dirname = path.resolve()
-const data = JSON.parse(fs.readFileSync(path.join(dirname, '../models/data.json')))
+const data = JSON.parse(fs.readFileSync(path.join(dirname, './models/data.json')))
 const users = data.users
 
 const fetchAccounts = (req, res) => {
@@ -52,7 +52,7 @@ const addAccount = (req, res) => {
     }
   }
   users.push(newUser)
-  fs.writeFileSync(path.join(dirname, '../models/data.json'), JSON.stringify(data))
+  fs.writeFileSync(path.join(dirname, './models/data.json'), JSON.stringify(data))
   res.status(201).json(newUser)
 }
 
@@ -73,7 +73,7 @@ const updateAccount = (req, res) => {
   if (coins) user.coins = coins
   // TODO: handle skins differently
   if (skins) user.skins = skins
-  fs.writeFileSync(path.join(dirname, '../models/data.json'), JSON.stringify(data))
+  fs.writeFileSync(path.join(dirname, './models/data.json'), JSON.stringify(data))
   res.status(200).json(user)
 }
 
@@ -88,7 +88,7 @@ const deleteAccount = (req, res) => {
   }
   const index = users.indexOf(user)
   users.splice(index, 1)
-  fs.writeFileSync(path.join(dirname, '../models/data.json'), JSON.stringify(data))
+  fs.writeFileSync(path.join(dirname, './models/data.json'), JSON.stringify(data))
   res.status(200).json({
     message: `User with ID ${id} deleted.`
   })
