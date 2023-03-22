@@ -1,4 +1,4 @@
-// import colors from 'colors'
+import colors from 'colors'
 
 const errorHandler = (err, req, res, next) => {
   console.log(`ERROR ====> ${err.message}`.bgRed.white)
