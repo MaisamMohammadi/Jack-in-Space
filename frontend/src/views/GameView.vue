@@ -31,13 +31,11 @@ class gameScene extends Phaser.Scene{
         this.moveShip(this.ship);
     }
 
-    moveShip(ship){
-        let xPosition;
-        let yPosition;
-        addEventListener('mousemove', (event) => {
-            ship.x = event.x;
-            ship.y = event.y;
-            console.log(xPosition, yPosition);
+    moveShip(ship){-
+
+        this.input.on('pointermove', function (pointer) {
+            ship.x = pointer.x;
+            ship.y = pointer.y;
         });
         
     }
