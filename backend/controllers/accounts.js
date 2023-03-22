@@ -8,7 +8,7 @@ const users = data.users
 
 const fetchAccounts = (req, res) => {
   const { username, password } = req.query
-  if (!username.trim() || !password.trim()) {
+  if (!username || !password) {
     res.status(200).json(users)
   } else {
     const user = users.find((user) => user.username === username)
@@ -33,9 +33,24 @@ const fetchAccounts = (req, res) => {
 const addAccount = (req, res) => {
   const { username, password, age } = req.body
   const user = users.find((user) => user.username === username)
+  if (!username || !password || !age) {
+    res.status(400).json({
+      message:
+        'Could not add account because one or more required fields were not provided. Please make sure you provided a username, password, and age.'
+    })
+    return
+  }
   if (user) {
     res.status(409).json({
-      message: 'Could not add account because this username is already taken. Please choose a different username.'
+      message:
+        'Could not add account because this username is already taken. Please choose a different username.'
+    })
+    return
+  }
+  if (age < 8) {
+    res.status(403).json({
+      message:
+        'Could not add account because you are too young to play this game. You must be at least 8 years old to play.'
     })
     return
   }
@@ -57,9 +72,13 @@ const addAccount = (req, res) => {
 }
 
 const updateAccount = (req, res) => {
-  const { id } = req.params
+  const id = Number(req.params.id)
   const { username, password, age, highscore, coins, skins } = req.body
   const user = users.find((user) => user.id === id)
+  // const user = users.find((user) => {
+  //   console.log(`${typeof user.id} === ${typeof id}`, user.id === id)
+  //   return user.id === id
+  // })
   if (!user) {
     res.status(404).json({
       message: `Could not update user with ID ${id} because it was not found.`
@@ -78,7 +97,7 @@ const updateAccount = (req, res) => {
 }
 
 const deleteAccount = (req, res) => {
-  const { id } = req.params
+  const id = Number(req.params.id)
   const user = users.find((user) => user.id === id)
   if (!user) {
     res.status(404).json({
