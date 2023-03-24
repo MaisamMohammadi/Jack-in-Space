@@ -11,6 +11,12 @@ import spaceship from '@/assets/images/spaceship_Modell.png';
 import trash from '@/assets/images/trash_Modell.png';
 import laser from '@/assets/images/Laser_Model.png';
 
+// class Laser extends Phaser.GameObjects.Image{
+//   constructor(scene){
+//     super(scene)
+//   }
+// }
+
 class gameScene extends Phaser.Scene{
     constructor(){
       super('gameScene');
@@ -41,17 +47,14 @@ class gameScene extends Phaser.Scene{
     }
 
     moveShip(ship){
-
         this.input.on('pointermove', function (pointer) {
             ship.x = pointer.x;
             ship.y = pointer.y;
         });
-        
     }
 
     moveTrash(trash){
         trash.y += 3;
-
         if(trash.y > config.height + 100)
             this.resetTrashPosition(trash)
     }
