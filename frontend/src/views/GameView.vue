@@ -11,11 +11,102 @@ import spaceship from '@/assets/images/spaceship_Modell.png';
 import trash from '@/assets/images/trash_Modell.png';
 import laser from '@/assets/images/Laser_Model.png';
 
-// class Laser extends Phaser.GameObjects.Image{
-//   constructor(scene){
-//     super(scene)
-//   }
-// }
+class Laser extends Phaser.Physics.Arcade.Sprite{
+    constructor(scene, x, y){
+        super(scene, x, y, 'laser');
+    }
+
+    fire(x, y){
+        this.body.reset(x, y);
+
+        this.setActive(true);
+        this.setVisible(true);
+
+        this.setVelocityY(-900);
+    }
+
+    preUpdate(time, delta){
+        super.preUpdate(time,delta);
+
+        if(this.y <= 0){
+            this.setActive(false);
+            this.setVisible(false);
+        }
+    }
+}
+
+class LaserGroup extends Phaser.Physics.Arcade.Group{
+    constructor(scene){
+        super(scene.physics.world, scene);
+
+        this.createMultiple({
+            classType: Laser,
+            frameQuantity: 30,
+            active: false,
+            visible: false,
+            key: 'laser'
+        })
+
+    }
+
+    fireLaser(x, y){
+        const laser = this.getFirstDead(false);
+        if(laser){
+            laser.fire(x, y);
+        }
+    }
+}
+
+class Trash extends Phaser.Physics.Arcade.Sprite{
+    constructor(scene, x, y){
+        super(scene, x, y, 'trash');
+    }
+
+    move(){
+        const coordinates = this.resetTrashPosition();
+        this.body.reset(coordinates.x, coordinates.y);
+
+        this.setActive(true);
+        this.setVisible(true);
+
+        this.setVelocityY(200);
+    }
+
+    resetTrashPosition(){
+        return { x: Phaser.Math.Between(50, config.width - 100), y: -50 };
+    }
+
+    preUpdate(time, delta){
+        super.preUpdate(time,delta);
+
+        if(this.y > config.height + 100){
+            this.setActive(false);
+            this.setVisible(false);
+        }
+    }
+}
+
+class TrashGroup extends Phaser.Physics.Arcade.Group{
+    constructor(scene){
+        super(scene.physics.world, scene);
+
+        this.createMultiple({
+            classType: Trash,
+            frameQuantity: 1,
+            active: false,
+            visible: false,
+            key: 'trash'
+        })
+
+    }
+
+    createTrash(){
+        const trash = this.getFirstDead(false);
+        if(trash){
+            trash.move();
+        }
+    }
+}
 
 class gameScene extends Phaser.Scene{
     constructor(){
@@ -29,21 +120,32 @@ class gameScene extends Phaser.Scene{
     }
 
     create(){
-
+        this.laserGroup = new LaserGroup(this);
         this.ship = this.add.image(100, 200, 'spaceship');
-        this.trash1 = this.add.image(400, 50, 'trash');
-        this.laser = this.add.image(300, 400, 'laser');
 
-        this.lasers = this.add.group();
+        this.trashGroup = new TrashGroup(this);
+        
 
         this.input.mouse.disableContextMenu();
         
+        this.moveShip(this.ship);
+        this.shootLaser(this.laserGroup, this.ship);
+
+        this.physics.add.collider(this.trashGroup, this.laserGroup, function(trash, laser){
+            trash.move();
+            laser.destroy();
+        });
     }
 
     update(){
-        this.moveTrash(this.trash1);
-        this.moveShip(this.ship);
-        
+        this.fallTrash(this.trashGroup);
+    }
+
+    shootLaser(laserGroup, ship){
+        this.input.on('pointerdown', function (pointer) {
+            // ToDo: Shoud I decrease the y position - 20 or not?
+            laserGroup.fireLaser(ship.x, ship.y);
+        });
     }
 
     moveShip(ship){
@@ -53,21 +155,17 @@ class gameScene extends Phaser.Scene{
         });
     }
 
-    moveTrash(trash){
-        trash.y += 3;
-        if(trash.y > config.height + 100)
-            this.resetTrashPosition(trash)
+    fallTrash(trashGroup){
+        trashGroup.createTrash();
     }
 
-    resetTrashPosition(trash){
-        trash.y = -50;
-        trash.x = Phaser.Math.Between(50, config.width - 100);
-    }
+    
 } 
 
 
 
 const config = {
+    type: Phaser.AUTO,
     width: 800,
     height: 600,
     backgroundColor: 0x000000,
@@ -75,7 +173,8 @@ const config = {
     physics:{
         default: "arcade",
         arcade: {
-            debug: false
+            debug: false,
+            gravity: { y: 0 }
         }
     }
 }
