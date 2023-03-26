@@ -47,13 +47,18 @@ class LaserGroup extends Phaser.Physics.Arcade.Group{
             key: 'laser'
         })
 
+        this.shootingaable = true;
     }
 
     fireLaser(x, y){
-        const laser = this.getFirstDead(false);
-        if(laser){
-            laser.fire(x, y);
+        if(this.shootingaable)
+        {
+            const laser = this.getFirstDead(false);
+            if(laser){
+                laser.fire(x, y);
+            }
         }
+        
     }
 }
 
@@ -108,6 +113,8 @@ class TrashGroup extends Phaser.Physics.Arcade.Group{
     }
 }
 
+
+
 class gameScene extends Phaser.Scene{
     constructor(){
       super('gameScene');
@@ -121,10 +128,8 @@ class gameScene extends Phaser.Scene{
 
     create(){
         this.laserGroup = new LaserGroup(this);
-        this.ship = this.add.image(100, 200, 'spaceship');
-
+        this.ship = this.physics.add.image(100, 200, 'spaceship');
         this.trashGroup = new TrashGroup(this);
-        
 
         this.input.mouse.disableContextMenu();
         
@@ -135,10 +140,17 @@ class gameScene extends Phaser.Scene{
             trash.move();
             laser.destroy();
         });
+
+        this.physics.add.collider(this.ship, this.trashGroup, function(ship, trash){
+            game.scene.scenes[0].laserGroup.shootingaable = false;
+            ship.destroy();
+            trash.move();
+        })
     }
 
     update(){
         this.fallTrash(this.trashGroup);
+        
     }
 
     shootLaser(laserGroup, ship){
