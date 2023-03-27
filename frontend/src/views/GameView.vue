@@ -154,6 +154,7 @@ class gameScene extends Phaser.Scene{
     }
 
     shootLaser(laserGroup, ship){
+        // eslint-disable-next-line no-unused-vars
         this.input.on('pointerdown', function (pointer) {
             // ToDo: Shoud I decrease the y position - 20 or not?
             laserGroup.fireLaser(ship.x, ship.y);
