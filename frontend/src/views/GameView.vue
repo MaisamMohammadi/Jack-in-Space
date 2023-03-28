@@ -1,10 +1,15 @@
 <template>
-    <div>
-  
+    <div class="text-fontColor">
+        <span v-if="playable" class="absolute left-[10vw] top-[10vh]">
+            {{ points }}
+        </span>
+        <span v-else class="absolute left-[10vw] top-[10vh]">
+            refresh the website!
+        </span>
     </div>
 </template>
 <script setup>
-// import { ref, computed } from 'vue' 
+import { ref} from 'vue' 
 // import { RouterView } from 'vue-router';
 import Phaser from 'phaser';
 import spaceship from '@/assets/images/spaceship_Modell.png';
@@ -113,7 +118,8 @@ class TrashGroup extends Phaser.Physics.Arcade.Group{
     }
 }
 
-
+const points = ref(0);
+const playable = ref(true);
 
 class gameScene extends Phaser.Scene{
     constructor(){
@@ -139,12 +145,15 @@ class gameScene extends Phaser.Scene{
         this.physics.add.collider(this.trashGroup, this.laserGroup, function(trash, laser){
             trash.move();
             laser.destroy();
+            points.value += 1;
         });
 
         this.physics.add.collider(this.ship, this.trashGroup, function(ship, trash){
             game.scene.scenes[0].laserGroup.shootingaable = false;
             ship.destroy();
             trash.move();
+            points.value = 0;
+            playable.value = false;
         })
     }
 
@@ -179,8 +188,8 @@ class gameScene extends Phaser.Scene{
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 700,
     backgroundColor: 0x000000,
     scene: [gameScene],
     physics:{
