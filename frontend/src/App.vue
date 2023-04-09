@@ -1,7 +1,7 @@
 <template>
-  <div>
-  <router-link :to="{ name: 'Game'}"><span class="mr-4">Start</span></router-link>
-  <router-link :to="{ name: 'Login'}"><span>Login</span></router-link>
+  <div class="text-[15px]">
+  <!-- <router-link :to="{ name: 'Game'}"><span class="mr-4">Start</span></router-link>
+  <router-link :to="{ name: 'Login'}"><span>Login</span></router-link> -->
     <RouterView></RouterView>
   </div>
 </template>

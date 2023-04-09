@@ -7,6 +7,8 @@ module.exports = {
     colors: {
       emerald: colors.emerald,
       fontColor: '#EEEEEE',
+      blue: '#3FB6FB',
+      yellow: '#DCFB3F',
     },
   },
   plugins: [],

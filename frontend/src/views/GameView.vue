@@ -11,7 +11,7 @@
 <script setup>
 import { ref} from 'vue' 
 // import { RouterView } from 'vue-router';
-import Phaser from 'phaser';
+import Phaser, { AUTO } from 'phaser';
 import spaceship from '@/assets/images/spaceship_Modell.png';
 import trash from '@/assets/images/trash_Modell.png';
 import laser from '@/assets/images/Laser_Model.png';
@@ -58,7 +58,7 @@ class LaserGroup extends Phaser.Physics.Arcade.Group{
     fireLaser(x, y){
         if(this.shootingaable)
         {
-            const laser = this.getFirstDead(false);
+            const laser = this.getFirstDead(true);
             if(laser){
                 laser.fire(x, y);
             }
@@ -166,6 +166,7 @@ class gameScene extends Phaser.Scene{
         // eslint-disable-next-line no-unused-vars
         this.input.on('pointerdown', function (pointer) {
             // ToDo: Shoud I decrease the y position - 20 or not?
+            
             laserGroup.fireLaser(ship.x, ship.y);
         });
     }
