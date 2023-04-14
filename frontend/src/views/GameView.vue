@@ -11,7 +11,7 @@
 <script setup>
 import { ref} from 'vue' 
 // import { RouterView } from 'vue-router';
-import Phaser, { AUTO } from 'phaser';
+import Phaser from 'phaser';
 import spaceship from '@/assets/images/spaceship_Modell.png';
 import trash from '@/assets/images/trash_Modell.png';
 import laser from '@/assets/images/Laser_Model.png';
@@ -189,8 +189,8 @@ class gameScene extends Phaser.Scene{
 
 const config = {
     type: Phaser.AUTO,
-    width: 1200,
-    height: 700,
+    width: window.innerWidth,
+    height: window.innerHeight,
     backgroundColor: 0x000000,
     scene: [gameScene],
     physics:{
