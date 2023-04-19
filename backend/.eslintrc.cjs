@@ -1,17 +1,18 @@
 module.exports = {
   env: {
     es2021: true,
-    node: true
+    node: true,
   },
-  extends: ['standard'],
+  extends: ['airbnb-base', 'prettier'],
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
   },
   rules: {
-    'linebreak-style': 0,
-    'no-console': 0,
-    'import/extensions': 0,
-    'object-curly-newline': 0
-  }
-}
+    'linebreak-style': 'off',
+    'import/extensions': 'off',
+    'no-console': 'off',
+    'object-curly-newline': 'off',
+    'implicit-arrow-linebreak': 'off',
+  },
+};
