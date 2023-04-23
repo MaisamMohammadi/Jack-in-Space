@@ -1,5 +1,5 @@
 <template>
-    <div class="text-fontColor bg-none">
+    <div class="text-white bg-none">
         <span v-if="playable" class="absolute left-[10vw] top-[10vh]">
             {{ points }}
         </span>
