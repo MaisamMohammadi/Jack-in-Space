@@ -9,7 +9,7 @@
     </div>
 </template>
 <script setup>
-import { ref} from 'vue' 
+import { ref } from 'vue' 
 // import { RouterView } from 'vue-router';
 import Phaser from 'phaser';
 import spaceship from '@/assets/images/spaceship_Modell.png';
@@ -205,6 +205,9 @@ const config = {
 // eslint-disable-next-line no-unused-vars
 let game = new Phaser.Game(config);
 
+window.addEventListener('popstate', () => {
+  game.destroy(true);
+});
 
 
 </script>
