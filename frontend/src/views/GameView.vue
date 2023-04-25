@@ -1,9 +1,9 @@
 <template>
     <div class="text-white bg-none">
-        <span v-if="playable" class="absolute left-[10vw] top-[10vh]">
-            {{ points }}
+        <span v-if="playable" class="absolute left-[3vw] top-[5vh] text-[2rem] text-blue">
+            Score: {{ points }}
         </span>
-        <span v-else class="absolute left-[10vw] top-[10vh]">
+        <span v-else class="absolute left-[3vw] top-[5vh] text-[2rem] text-blue">
             refresh the website!
         </span>
     </div>
@@ -12,9 +12,15 @@
 import { ref } from 'vue' 
 // import { RouterView } from 'vue-router';
 import Phaser from 'phaser';
-import spaceship from '@/assets/images/spaceship_Modell.png';
-import trash from '@/assets/images/trash_Modell.png';
+import spaceship from '@/assets/images/Spaceship-2.svg';
+import backgroundimage from '@/assets/images/background.png';
 import laser from '@/assets/images/Laser_Model.png';
+import trash from '@/assets/images/box-trash.svg';
+import trash2 from '@/assets/images/camera-trash.svg';
+import trash3 from '@/assets/images/panel-trash.svg';
+import trash4 from '@/assets/images/panel-trash.svg';
+
+
 
 class Laser extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y){
@@ -102,7 +108,7 @@ class TrashGroup extends Phaser.Physics.Arcade.Group{
 
         this.createMultiple({
             classType: Trash,
-            frameQuantity: 1,
+            frameQuantity: 2,
             active: false,
             visible: false,
             key: 'trash',
@@ -130,12 +136,19 @@ class gameScene extends Phaser.Scene{
         this.load.image('trash', trash);
         this.load.image('spaceship', spaceship);
         this.load.image('laser', laser);
+        this.load.image('background', backgroundimage);
     }
 
     create(){
+        this.background = this.add.image(0, 0, "background");
+
+        this.background.setOrigin(0, 0);
+        
         this.laserGroup = new LaserGroup(this);
         this.ship = this.physics.add.image(100, 200, 'spaceship');
         this.trashGroup = new TrashGroup(this);
+
+        
 
         this.input.mouse.disableContextMenu();
         
@@ -208,7 +221,6 @@ let game = new Phaser.Game(config);
 window.addEventListener('popstate', () => {
   game.destroy(true);
 });
-
 
 </script>
 <style>
