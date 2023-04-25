@@ -1,0 +1,11 @@
+body {
+  margin: 32px 64px 32px 64px;
+}
+
+.mainPara {
+  margin: 2em 0 2em 0;
+}
+
+form, div {
+  margin-top: 128px;
+}
