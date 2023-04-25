@@ -4,7 +4,7 @@ import fs from 'fs'
 sqlite3.verbose()
 
 // Here you can change the name of the database
-const db = new sqlite3.Database('./data/movies.sqlite')
+const db = new sqlite3.Database('./data/accounts.sqlite')
 
 // Here will read the file db.sql and execute the queries
 db.exec(fs.readFileSync('./data/db.sql', 'utf-8').toString(), (err) => {
