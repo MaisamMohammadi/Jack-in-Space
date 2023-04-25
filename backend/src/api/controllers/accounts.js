@@ -5,6 +5,10 @@ const isNullOrWhitespace = (str) => {
   return !str || !str.trim()
 }
 
+const isNullOrUndefined = (any) => {
+  return any === null || any === undefined
+}
+
 const checkIfUsernameTaken = async (username) => {
   const accounts = await model.dbFetchAccounts()
   const account = accounts.find((account) => account.username === username)
@@ -133,7 +137,7 @@ const updateAccountBirthdate = async (id, requestBody) => {
 
 const updateAccountHighscore = async (id, requestBody) => {
   const { highscore } = requestBody
-  if (isNullOrWhitespace(highscore)) {
+  if (isNullOrUndefined(highscore)) {
     return { jackIsLost: true, status: 400, message: 'Supplied data (highscore) is empty' }
   }
   if (isNaN(Number(highscore))) {
@@ -145,7 +149,7 @@ const updateAccountHighscore = async (id, requestBody) => {
 
 const updateAccountCoins = async (id, requestBody) => {
   const { coins } = requestBody
-  if (isNullOrWhitespace(coins)) {
+  if (isNullOrUndefined(coins)) {
     return { jackIsLost: true, status: 400, message: 'Supplied data (coins) is empty' }
   }
   if (isNaN(Number(coins))) {
@@ -156,13 +160,14 @@ const updateAccountCoins = async (id, requestBody) => {
 }
 
 const updateAccountSkinShip = async (id, requestBody) => {
-  const { skinShip } = requestBody
+  let { skinShip } = requestBody
   if (isNullOrWhitespace(skinShip)) {
     return { jackIsLost: true, status: 400, message: 'Supplied data (skinShip) is empty' }
   }
   if (isNaN(Number(skinShip))) {
     return { jackIsLost: true, status: 400, message: 'Supplied data (skinShip) is not a number' }
   }
+  skinShip = Number(skinShip)
   const account = await model.dbUpdateAccountSkinShip(id, skinShip)
   return account
 }

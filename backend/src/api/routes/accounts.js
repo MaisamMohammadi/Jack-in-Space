@@ -12,8 +12,9 @@ import {
 const router = express.Router()
 
 router.get('/', asyncHandler(fetchAccounts))
-router.get('/:id', asyncHandler(fetchAccount))
+// IMPORTANT: /authenticate must come before /:id
 router.get('/authenticate', asyncHandler(authenticateAccountRoute))
+router.get('/:id', asyncHandler(fetchAccount))
 router.post('/', asyncHandler(addAccount))
 router.patch('/:id/:method', asyncHandler(updateAccount))
 router.delete('/:id', asyncHandler(deleteAccount))
