@@ -22,11 +22,23 @@ const fetchAccount = async (req, res) => {
   res.status(200).json(account)
 }
 
-const authenticateAccount = async (username, password) => {
-  const user = await model.dbFetchAccount(username)
+const authenticateAccount = async (idOrUsername, password) => {
+  const user = await model.dbFetchAccount(idOrUsername)
   if (!user) return { username: false, password: false }
   if (!bcrypt.compareSync(password, user.password)) return { username: true, password: false }
   return { username: true, password: true }
+}
+
+const authenticateAccountRoute = async (req, res) => {
+  const { username, password } = req.body
+  const result = await authenticateAccount(username, password)
+  if (result.username && result.password) {
+    res.status(200).json({ message: 'Authentication successful' })
+  } else if (result.username && !result.password) {
+    res.status(401).json({ message: 'Wrong password' })
+  } else {
+    res.status(404).json({ message: 'User not found' })
+  }
 }
 
 const addAccount = async (req, res) => {
@@ -89,15 +101,15 @@ const updateAccountUsername = async (id, requestBody) => {
 }
 
 const updateAccountPassword = async (id, requestBody) => {
-  const { username, password, newPassword } = requestBody
-  if (
-    isNullOrWhitespace(username) ||
-    isNullOrWhitespace(password) ||
-    isNullOrWhitespace(newPassword)
-  ) {
-    return { jackIsLost: true, status: 400, message: 'Supplied data (username or password or newPassword) is empty' }
+  const { password, newPassword } = requestBody
+  if (isNullOrWhitespace(password) || isNullOrWhitespace(newPassword)) {
+    return {
+      jackIsLost: true,
+      status: 400,
+      message: 'Supplied data (password or newPassword) is empty'
+    }
   }
-  const authRes = await authenticateAccount(username, password)
+  const authRes = await authenticateAccount(id, password)
   if (!authRes.username) {
     return { jackIsLost: true, status: 404, message: 'Username not found' }
   }
@@ -176,7 +188,7 @@ const deleteAccount = async (req, res) => {
 export {
   fetchAccounts,
   fetchAccount,
-  authenticateAccount,
+  authenticateAccountRoute,
   addAccount,
   updateAccount,
   deleteAccount
