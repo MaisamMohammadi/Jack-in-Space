@@ -16,7 +16,13 @@ const dbFetchAccount = async (idOrUsername) => {
 }
 
 const dbAddAccount = async (username, password, birthdate) => {
-  const age = new Date().getFullYear() - new Date(birthdate).getFullYear()
+  let age = new Date().getFullYear() - new Date(birthdate).getFullYear()
+  if (age < 8) return
+  const birthdayHasPassed =
+    new Date().getMonth() > new Date(birthdate).getMonth() ||
+    (new Date().getMonth() === new Date(birthdate).getMonth() &&
+      new Date().getDate() >= new Date(birthdate).getDate())
+  if (!birthdayHasPassed) age -= 1
   const sql =
     'INSERT INTO accounts (username, password, birthdate, age, highscore, coins, skinShip, skinLaser) VALUES (?, ?, ?, ?, 0, 0, 0, 0) RETURNING *'
   const account = await query(sql, [username, password, birthdate, age])
@@ -36,8 +42,15 @@ const dbUpdateAccountPassword = async (id, password) => {
 }
 
 const dbUpdateAccountBirthdate = async (id, birthdate) => {
-  const age = new Date().getFullYear() - new Date(birthdate).getFullYear()
-  const sql = 'UPDATE accounts SET birthdate = ?, age = ? WHERE id = ? RETURNING *'
+  let age = new Date().getFullYear() - new Date(birthdate).getFullYear()
+  if (age < 8) return
+  const birthdayHasPassed =
+    new Date().getMonth() > new Date(birthdate).getMonth() ||
+    (new Date().getMonth() === new Date(birthdate).getMonth() &&
+      new Date().getDate() >= new Date(birthdate).getDate())
+  if (!birthdayHasPassed) age -= 1
+  const sql =
+    'UPDATE accounts SET birthdate = ?, age = ? WHERE id = ? RETURNING *'
   const account = await query(sql, [birthdate, age, id])
   return account
 }
