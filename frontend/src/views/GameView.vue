@@ -79,17 +79,17 @@ class Trash extends Phaser.Physics.Arcade.Sprite{
         this.setActive(true);
         this.setVisible(true);
 
-        this.setVelocityY(200);
+        this.setVelocityY(400);
     }
 
     resetTrashPosition(){
-        return { x: Phaser.Math.Between(50, config.width - 100), y: -50 };
+        return { x: Phaser.Math.Between(this.width / 2, config.width - 100), y: - this.width / 2 };
     }
 
     preUpdate(time, delta){
         super.preUpdate(time,delta);
 
-        if(this.y > config.height + 100){
+        if(this.y > config.height + this.height){
             this.setActive(false);
             this.setVisible(false);
         }
@@ -105,7 +105,7 @@ class TrashGroup extends Phaser.Physics.Arcade.Group{
             frameQuantity: 1,
             active: false,
             visible: false,
-            key: 'trash'
+            key: 'trash',
         })
 
     }
