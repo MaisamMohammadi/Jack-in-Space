@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import morgan from 'morgan'
 import path from 'path'
-import moviesRoute from './api/routes/movies.js'
+import accountsRoute from './api/routes/accounts.js'
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js'
 
 dotenv.config()
@@ -15,7 +15,7 @@ app.use(morgan('dev'))
 app.use(express.static(path.join(dirname, '/public')))
 app.use(express.json())
 
-app.use('/api/movies', moviesRoute)
+app.use('/account', accountsRoute)
 app.use(errorHandler)
 app.use(notFoundHandler)
 
