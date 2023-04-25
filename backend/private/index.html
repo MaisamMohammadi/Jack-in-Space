@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
+  <title>Backend Admin Panel</title>
+</head>
+
+<body>
+  <div class="container">
+    <hr />
+    <h1 class="text-center">Backend Admin Panel</h1>
+    <hr />
+    <p class="text-center">
+      Hey there! If you're not a developer for <b>Jack-In-Space</b>, then get out of here! (please)
+    </p>
+    <hr />
+    <p>
+      <b>Tip:</b>
+      Always remember to check the console! (F12)
+    </p>
+    <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="create-tab" data-bs-toggle="tab" data-bs-target="#create-tab-pane">
+          Create
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="read-tab" data-bs-toggle="tab" data-bs-target="#read-tab-pane">Read</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="update-tab" data-bs-toggle="tab" data-bs-target="#update-tab-pane">Update</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="delete-tab" data-bs-toggle="tab" data-bs-target="#delete-tab-pane">Delete</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane show active" id="create-tab-pane" tabindex="0">
+        <!-- <div class="alert alert-success"></div> -->
+        <p class="m-3">All 3 fields are required.</p>
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <div class="tab-pane fade show active" id="create-tab-pane" tabindex="0">
+                <div class="m-3 input-group">
+                  <span class="input-group-text">Username</span>
+                  <input id="createUsername" type="text" class="form-control">
+                </div>
+                <div class="m-3 input-group">
+                  <span class="input-group-text">Password</span>
+                  <input id="createPassword" type="password" class="form-control">
+                </div>
+                <div class="m-3 input-group">
+                  <span class="input-group-text">Birthdate</span>
+                  <input id="createBirthdate" type="date" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="text-center align-self-center col">
+              <button id="createButton" class="p-3 btn btn-success bg-gradient">Create Account!</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <b>Output:</b>
+          <p>Status: <span id="createStatus"></span></p>
+          <code id="createOutput"></code>
+        </div>
+      </div>
+      <div class="tab-pane" id="read-tab-pane" tabindex="0">
+        <!-- <div class="alert alert-info"></div> -->
+        <div class="container">
+          <div class="m-3 row">
+            <div class="col"></div>
+            <div class="text-center align-self-center col">
+              <button id="readButton" class="p-3 btn btn-info bg-gradient">Get All Accounts!</button>
+            </div>
+          </div>
+          <div class="m-3 row">
+            <div class="col">
+              <div class="m-3 input-group">
+                <span class="input-group-text">ID</span>
+                <input id="readID" type="number" class="form-control">
+              </div>
+            </div>
+            <div class="text-center col">
+              <button id="readButtonID" class="p-3 btn btn-info bg-gradient">Get Account By ID!</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <b>Output:</b>
+          <p>Status: <span id="readStatus"></span></p>
+          <code id="readOutput"></code>
+        </div>
+      </div>
+      <div class="tab-pane" id="update-tab-pane" tabindex="0">
+        <!-- <div class="alert alert-primary"></div> -->
+        <div class="container">
+          <div class="m-3 row">
+            <div class="col">
+              <div class="m-3 input-group">
+                <span class="input-group-text">ID</span>
+                <input id="updateID" type="number" class="form-control">
+              </div>
+              <div class="m-3 input-group">
+                <span class="input-group-text">Method</span>
+                <select id="updateMethod" class="form-select">
+                  <option value="username">Username</option>
+                  <option value="password">Password</option>
+                  <option value="birthdate">Birthdate</option>
+                  <option value="highscore">Highscore</option>
+                  <option value="coins">Coins</option>
+                  <option value="skinShip">Skin Ship</option>
+                  <option value="skinLaser">Skin Laser</option>
+                </select>
+              </div>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+          </div>
+          <div class="m-3 row">
+            <div class="col">
+              <!-- username, password, birthdate, highscore, coins, skinShip, skinLaser -->
+              <div class="m-3 input-group">
+                <span class="input-group-text">Username</span>
+                <input id="updateUsername" type="text" class="form-control">
+              </div>
+              <div class="m-3 input-group">
+                <span class="input-group-text">Password</span>
+                <input id="updatePassword" type="password" class="form-control">
+              </div>
+              <div class="m-3 input-group">
+                <span class="input-group-text">Birthdate</span>
+                <input id="updateBirthdate" type="date" class="form-control">
+              </div>
+              <div class="m-3 input-group">
+                <span class="input-group-text">Highscore</span>
+                <input id="updateHighscore" type="number" class="form-control">
+              </div>
+              <div class="m-3 input-group">
+                <span class="input-group-text">Coins</span>
+                <input id="updateCoins" type="number" class="form-control">
+              </div>
+              <div class="m-3 input-group">
+                <span class="input-group-text">Skin Ship</span>
+                <input id="updateSkinShip" type="number" class="form-control">
+              </div>
+              <div class="m-3 input-group">
+                <span class="input-group-text">Skin Laser</span>
+                <input id="updateSkinLaser" type="number" class="form-control">
+              </div>
+            </div>
+            <div class="text-center col">
+              <button id="updateButton" class="p-3 btn btn-primary bg-gradient">Update Account!</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <b>Output:</b>
+          <p>Status: <span id="updateStatus"></span></p>
+          <code id="updateOutput"></code>
+        </div>
+      </div>
+      <div class="tab-pane" id="delete-tab-pane" tabindex="0">
+        <!-- <div class="alert alert-danger"></div> -->
+        <div class="container">
+          <div class="m-3 row">
+            <div class="col">
+              <div class="m-3 input-group">
+                <span class="input-group-text">ID</span>
+                <input id="deleteID" type="number" class="form-control">
+              </div>
+            </div>
+            <div class="text-center col">
+              <button id="deleteButtonID" class="p-3 btn btn-danger bg-gradient">Delete Account!</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <b>Output:</b>
+          <p>Status: <span id="deleteStatus"></span></p>
+          <code id="deleteOutput"></code>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./js/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
