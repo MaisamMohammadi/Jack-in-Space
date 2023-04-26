@@ -1,26 +1,28 @@
 {
   "name": "express-templ",
   "version": "1.0.0",
-  "description": "a simple web server",
+  "description": "An Express server with SQLite database support.",
+  "author": "Hossaini Hosain",
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "lint": "eslint . --ext .js"
+    "dev": "nodemon ./src/app.js",
+    "initdb": "node ./src/db/initdb.js",
+    "lint": "eslint . --ext .js",
+    "start": "node ./src/app.js"
   },
-  "author": "Hossaini Hosain",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
-    "dotenv": "^14.2.0",
-    "express": "^4.17.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
     "is-my-json-valid": "^2.20.6",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.15"
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
-    "eslint": "^7.26.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.4"
+    "nodemon": "^2.0.22",
+    "standard": "^17.0.0"
   }
 }
