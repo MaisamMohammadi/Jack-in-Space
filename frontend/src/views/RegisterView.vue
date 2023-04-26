@@ -1,7 +1,7 @@
 <template>
   <div class="w-screen h-screen view">
     <div id="container" class="w-[40vw] h-[40vw] flex flex-col justify-center items-center bg-circle/50 absolute left-[30vw] top-[12vh] px-auto rounded-full border-[1vw] border-blue">
-          <p class="text-center text-[100px] mt-[5%]">Login</p>
+          <p class="text-center text-[100px] mt-[5%]">REGISTER</p>
 
           <div class="mt-10">
             <div class="sm:col-span-3">
@@ -11,13 +11,6 @@
               </div>
             </div>
 
-            <!-- <div class="sm:col-span-4">
-              <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-              <div class="mt-2">
-                <input id="email" name="email" type="email" v-model="email" autocomplete="email" class="block w-[500px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-              </div>
-            </div> -->
-
             <div class="mt-5">
               <label for="password" class="block text-lg font-medium leading-6">Password</label>
               <div class="mt-2">
@@ -25,14 +18,21 @@
               </div>
             </div>
 
+            <div class="mt-5">
+              <label for="birthdate" class="block text-lg font-medium leading-6">birthdate</label>
+              <div class="mt-2">
+                <input id="birthdate" name="birthdate" type="date" v-model="data.birthdate" autocomplete="password" class="block w-[300px] h-[40px] rounded-md border-0 px-1 py-1.5 text-black shadow-sm bg-white focus:bg-white/50" />
+              </div>
+            </div>
+
           </div>
           
-          <router-link :to="{ name: 'Register'}">
-            <div class="w-[15vw] h-[6vh] px-1 py-1 my-[15px] flex justify-center items-center text-[25px]">Register</div>
+          <router-link :to="{ name: 'Login'}">
+            <div class="w-[15vw] h-[6vh] px-1 py-1 my-[15px] flex justify-center items-center text-[25px]">Login</div>
           </router-link>
           
         
-          <div class="w-[15vw] h-[6vh] px-1 py-1 my-[15px] flex justify-center items-center border-[3px] border-blue text-[35px]" @click="getResult">LOGIN</div>
+          <div class="w-[15vw] h-[6vh] px-1 py-1 my-[15px] flex justify-center items-center border-[3px] border-blue text-[35px]" @click="getResult">Register</div>
           
         
       </div>
@@ -53,6 +53,7 @@ import { ref } from 'vue'
 const data = ref({
   username : '',
   password : '',
+  birthdate: '',
 })
 
 const getResult = () => {
