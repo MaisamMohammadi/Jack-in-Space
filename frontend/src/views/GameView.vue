@@ -9,7 +9,8 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue' 
+import { ref } from 'vue';
+// import { game } from '../game/game.js';
 // import { RouterView } from 'vue-router';
 import Phaser from 'phaser';
 import spaceship from '@/assets/images/Spaceship-2.svg';
