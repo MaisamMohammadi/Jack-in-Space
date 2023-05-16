@@ -1,5 +1,5 @@
 import * as model from '../models/accounts.js'
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs'// eslint-disable-line no-unused-vars
 
 const isNullOrWhitespace = (str) => {
   return !str || !str.trim()
@@ -29,7 +29,8 @@ const fetchAccount = async (req, res) => {
 const authenticateAccount = async (idOrUsername, password) => {
   const user = await model.dbFetchAccount(idOrUsername)
   if (!user) return { username: false, password: false }
-  if (!bcrypt.compareSync(password, user.password)) {
+  // if (!bcrypt.compareSync(password, user.password)) {
+  if (password !== user.password) {
     return { username: true, password: false }
   }
   return { username: true, password: true }
@@ -69,9 +70,12 @@ const addAccount = async (req, res) => {
     })
     return
   }
-  const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(password, salt)
-  const account = await model.dbAddAccount(username, hashedPassword, birthdate)
+  // const salt = await bcrypt.genSalt(10)
+  // const hashedPassword = await bcrypt.hash(password, salt)
+  // const account = await model.dbAddAccount(username, hashedPassword, birthdate)
+
+  // Assume password is already hashed:
+  const account = await model.dbAddAccount(username, password, birthdate)
   if (!account) {
     res.status(400).json({
       message:
@@ -154,9 +158,12 @@ const updateAccountPassword = async (id, requestBody) => {
   if (!authRes.password) {
     return { jackIsLost: true, status: 401, message: 'Incorrect password' }
   }
-  const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(newPassword, salt)
-  const account = await model.dbUpdateAccountPassword(id, hashedPassword)
+  // const salt = await bcrypt.genSalt(10)
+  // const hashedPassword = await bcrypt.hash(newPassword, salt)
+  // const account = await model.dbUpdateAccountPassword(id, hashedPassword)
+
+  // Assume password is already hashed:
+  const account = await model.dbUpdateAccountPassword(id, newPassword)
   return account
 }
 
