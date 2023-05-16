@@ -13,7 +13,7 @@ const router = express.Router()
 
 router.get('/', asyncHandler(fetchAccounts))
 router.get('/:id', asyncHandler(fetchAccount))
-router.put('/authenticate', asyncHandler(authenticateAccountRoute))
+router.patch('/authenticate', asyncHandler(authenticateAccountRoute))
 router.post('/', asyncHandler(addAccount))
 router.patch('/:id/:method', asyncHandler(updateAccount))
 router.delete('/:id', asyncHandler(deleteAccount))

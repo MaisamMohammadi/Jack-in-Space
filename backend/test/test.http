@@ -20,7 +20,7 @@ GET http://localhost:5000/account
 ###
 GET http://localhost:5000/account/2
 ###
-GET http://localhost:5000/account/authenticate
+PATCH http://localhost:5000/account/authenticate
 Content-Type: application/json
 
 {
