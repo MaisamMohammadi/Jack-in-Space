@@ -1,20 +1,25 @@
 <template>
     <div class="text-white bg-none">
-        <!-- <span v-if="playable" class="absolute left-[3vw] top-[5vh] text-[2rem] text-blue">
-            Score: {{ points }}
-        </span>
-        <span v-else class="absolute left-[3vw] top-[5vh] text-[2rem] text-blue">
-            refresh the website!
-        </span> -->
+        <MenuComp v-if="myStore.showMenu" @destroyGame="gameDestroyed"></MenuComp>
     </div>
 </template>
 <script setup>
 import { ref } from 'vue';
-import { game } from '../game/game.js';
+import MenuComp from '../components/MenuComp.vue';
+import { config } from '../game/game.js';
+import { gameStore } from '../stores/defaultStore';
+import Phaser from 'phaser';
 // import { RouterView } from 'vue-router';
 
+const game = new Phaser.Game(config);
 
+const myStore = gameStore();
 
+const gameDestroyed = () => {
+    console.log('its deleted');
+    myStore.showMenu = false;
+    game.destroy(true)
+}
 
 window.addEventListener('popstate', () => {
   game.destroy(true);

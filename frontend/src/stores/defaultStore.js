@@ -11,3 +11,9 @@ export const useDefaultStore = defineStore('DefaultId', {
   actions: {},
   getters: {},
 });
+
+export const gameStore = defineStore("gameStore", () => {
+  const showMenu = false;
+
+  return { showMenu };
+});
