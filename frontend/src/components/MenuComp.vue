@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute my-[5%] ml-[35vw] mt-[35vh] flex h-[30vh] w-[30vw] flex-col items-center justify-center rounded-xl border-[1vw] border-blue bg-circle/50 text-xl"
+    class="absolute my-[5%] ml-[35vw] mt-[35vh] flex h-[30vh] w-[30vw] flex-col items-center justify-center rounded-xl bg-circle/50 text-xl"
   >
 
     <p>Score: {{ myStore.score }}</p>
