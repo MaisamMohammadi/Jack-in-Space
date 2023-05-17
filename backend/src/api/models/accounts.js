@@ -26,7 +26,7 @@ const dbAddAccount = async (username, password, birthdate) => {
   const sql =
     'INSERT INTO accounts (username, password, birthdate, age, highscore, coins, skinShip, skinLaser) VALUES (?, ?, ?, ?, 0, 0, 0, 0) RETURNING *'
   const account = await query(sql, [username, password, birthdate, age])
-  return account
+  return account[0]
 }
 
 const dbUpdateAccountUsername = async (id, username) => {
