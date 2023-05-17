@@ -63,23 +63,28 @@ const data = ref({
 })
 
 const getResult = async () => {
-  console.log(data.value)
+  // console.log(data.value)
   const salt = bcrypt.genSaltSync(10)
-  data.value.password = bcrypt.hashSync(data.value.password, salt)
+  const requestBody = {
+    username: data.value.username,
+    password: bcrypt.hashSync(data.value.password, salt),
+    birthdate: data.value.birthdate,
+    salt
+  }
   let result
   try {
-    result = await axios.post('http://localhost:5000/account', data.value, {
+    result = await axios.post('http://localhost:5000/account', requestBody, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     alert(JSON.parse(error.request.response).message)
   }
   if (result?.request.status === 201) {
-    alert(`Welcome to Jack-In-Space, ${result.data[0].username}!\n - Jack from space`)
-    console.log(result)
+    alert(`Welcome to Jack-In-Space, ${result.data.username}!\n - Jack from space`)
+    // console.log(result)
     router.push({ name: 'Login' })
   }
 }

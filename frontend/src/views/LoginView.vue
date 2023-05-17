@@ -62,23 +62,27 @@ const data = ref({
 })
 
 const getResult = async () => {
-  console.log(data.value)
-  const salt = bcrypt.genSaltSync(10)
-  data.value.password = bcrypt.hashSync(data.value.password, salt)
+  // console.log(data.value)
   let result
   try {
-    result = await axios.patch('http://localhost:5000/account/authenticate', data.value, {
+    const user = await axios.get(`http://localhost:5000/account/${data.value.username}`)
+    // console.log(user)
+    const requestBody = {
+      username: data.value.username,
+      password: bcrypt.hashSync(data.value.password, user.data.salt)
+    }
+    result = await axios.patch('http://localhost:5000/account/authenticate', requestBody, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     alert(JSON.parse(error.request.response).message)
   }
   if (result?.request.status === 200) {
     alert(`Nice to see you again, ${data.value.username}!\n - Jack from space`)
-    console.log(result)
+    // console.log(result)
     // TODO: idk token something Copilot
     // localStorage.setItem('token', result.data.token)
     router.push({ name: 'Home' })

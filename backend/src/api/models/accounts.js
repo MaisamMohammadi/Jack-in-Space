@@ -15,7 +15,7 @@ const dbFetchAccount = async (idOrUsername) => {
   return account[0]
 }
 
-const dbAddAccount = async (username, password, birthdate) => {
+const dbAddAccount = async (username, password, birthdate, salt) => {
   let age = new Date().getFullYear() - new Date(birthdate).getFullYear()
   if (age < 8) return
   const birthdayHasPassed =
@@ -24,8 +24,8 @@ const dbAddAccount = async (username, password, birthdate) => {
       new Date().getDate() >= new Date(birthdate).getDate())
   if (!birthdayHasPassed) age -= 1
   const sql =
-    'INSERT INTO accounts (username, password, birthdate, age, highscore, coins, skinShip, skinLaser) VALUES (?, ?, ?, ?, 0, 0, 0, 0) RETURNING *'
-  const account = await query(sql, [username, password, birthdate, age])
+    'INSERT INTO accounts (username, password, salt, birthdate, age, highscore, coins, skinShip, skinLaser) VALUES (?, ?, ?, ?, ?, 0, 0, 0, 0) RETURNING *'
+  const account = await query(sql, [username, password, salt, birthdate, age])
   return account[0]
 }
 

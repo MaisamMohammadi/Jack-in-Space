@@ -1,5 +1,5 @@
 import * as model from '../models/accounts.js'
-import bcrypt from 'bcryptjs'// eslint-disable-line no-unused-vars
+import bcrypt from 'bcryptjs' // eslint-disable-line no-unused-vars
 
 const isNullOrWhitespace = (str) => {
   return !str || !str.trim()
@@ -55,9 +55,21 @@ const authenticateAccountRoute = async (req, res) => {
 }
 
 const addAccount = async (req, res) => {
-  const { username, password, birthdate } = req.body
+  const { username, password, birthdate, salt } = req.body
+  if (/^\d+$/.test(username)) {
+    res.status(400).json({ message: 'Username cannot contain only numbers' })
+    return
+  }
   if (await checkIfUsernameTaken(username)) {
     res.status(409).json({ message: 'Username already taken' })
+    return
+  }
+  if (isNullOrUndefined(salt)) {
+    res
+      .status(500)
+      .json({
+        message: 'Salt is somwhow empty. Please contact the developers'
+      })
     return
   }
   if (
@@ -75,7 +87,7 @@ const addAccount = async (req, res) => {
   // const account = await model.dbAddAccount(username, hashedPassword, birthdate)
 
   // Assume password is already hashed:
-  const account = await model.dbAddAccount(username, password, birthdate)
+  const account = await model.dbAddAccount(username, password, birthdate, salt)
   if (!account) {
     res.status(400).json({
       message:
