@@ -54,6 +54,7 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import router from '../router/index.js'
+import bcrypt from 'bcryptjs'
 
 const data = ref({
   username: '',
@@ -63,6 +64,8 @@ const data = ref({
 
 const getResult = async () => {
   console.log(data.value)
+  const salt = bcrypt.genSaltSync(10)
+  data.value.password = bcrypt.hashSync(data.value.password, salt)
   let result
   try {
     result = await axios.post('http://localhost:5000/account', data.value, {
