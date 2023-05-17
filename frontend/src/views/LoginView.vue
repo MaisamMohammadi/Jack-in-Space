@@ -36,7 +36,7 @@
       </router-link>
 
       <div
-        class="my-[15px] flex h-[6vh] w-[15vw] items-center justify-center border-[3px] border-blue px-1 py-1 text-[35px]"
+        class="cursor-pointer my-[15px] flex h-[6vh] w-[15vw] items-center justify-center border-[3px] border-blue px-1 py-1 text-[35px]"
         @click="getResult">
         LOGIN
       </div>
@@ -52,14 +52,34 @@
 
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
+import router from '../router/index.js'
 
 const data = ref({
   username: '',
   password: ''
 })
 
-const getResult = () => {
+const getResult = async () => {
   console.log(data.value)
+  let result
+  try {
+    result = await axios.patch('http://localhost:5000/account/authenticate', data.value, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    alert(JSON.parse(error.request.response).message)
+  }
+  if (result?.request.status === 200) {
+    alert(`Nice to see you again, ${data.value.username}!\n - Jack from space`)
+    console.log(result)
+    // TODO: idk token something Copilot
+    // localStorage.setItem('token', result.data.token)
+    router.push({ name: 'Home' })
+  }
 }
 </script>
 
