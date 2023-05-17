@@ -24,4 +24,8 @@ import { RouterView } from 'vue-router';
 .view{
   font-family: overwatch;
 }
+
+.cursor-pointer{
+  cursor: pointer;
+}
 </style>
