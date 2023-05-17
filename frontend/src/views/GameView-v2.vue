@@ -4,7 +4,7 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+// import { ref } from 'vue';
 import MenuComp from '../components/MenuComp.vue';
 import { config } from '../game/game.js';
 import { gameStore } from '../stores/Store';
