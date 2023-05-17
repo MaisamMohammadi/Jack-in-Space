@@ -37,7 +37,7 @@
 
 
       <div
-        class="w-[15vw] h-[6vh] px-1 py-1 my-[15px] flex justify-center items-center border-[3px] border-blue text-[35px]"
+        class="cursor-pointer w-[15vw] h-[6vh] px-1 py-1 my-[15px] flex justify-center items-center border-[3px] border-blue text-[35px]"
         @click="getResult">Register</div>
 
 
@@ -52,6 +52,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
+import router from '../router/index.js'
 
 const data = ref({
   username: '',
@@ -59,8 +61,24 @@ const data = ref({
   birthdate: '',
 })
 
-const getResult = () => {
+const getResult = async () => {
   console.log(data.value)
+  let result
+  try {
+    result = await axios.post('http://localhost:5000/account', data.value, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    alert(JSON.parse(error.request.response).message)
+  }
+  if (result?.request.status === 201) {
+    alert(`Welcome to Jack-In-Space, ${result.data[0].username}!\n - Jack from space`)
+    console.log(result)
+    router.push({ name: 'Login' })
+  }
 }
 
 </script>
@@ -73,4 +91,5 @@ const getResult = () => {
 
 p {
   font-family: title;
-}</style>
+}
+</style>
