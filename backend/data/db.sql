@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS accounts (
     id INTEGER PRIMARY KEY,
     username VARCHAR,
     password VARCHAR,
+    salt VARCHAR,
     birthdate DATE,
     age INTEGER,
     highscore INTEGER,
