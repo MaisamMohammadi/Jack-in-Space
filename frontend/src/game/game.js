@@ -7,7 +7,7 @@ import trash from '@/assets/images/box-trash.svg';
 import trash2 from '@/assets/images/camera-trash.svg';
 import trash3 from '@/assets/images/panel-trash.svg';
 import trash4 from '@/assets/images/panel-trash2.svg';
-// import explosion from "@/assets/images/explosion.gif";
+import explosion from "@/assets/gifs/explosion.gif";
 import { gameStore } from '../stores/Store';
 
 const myStore = gameStore();
@@ -26,10 +26,7 @@ class gameScene extends Phaser.Scene {
     this.load.image('spaceship', spaceship);
     this.load.image('laser', laser);
     this.load.image('background', backgroundimage);
-    this.load.spritesheet('explosion', 'explosion', {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
+    this.load.image('explosion', explosion);
   }
 
   create() {
@@ -155,6 +152,8 @@ class gameScene extends Phaser.Scene {
       null,
       this,
     );
+
+    
   }
 
   update() {
