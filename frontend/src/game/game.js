@@ -1,31 +1,32 @@
-import Phaser from "phaser";
-import { Laser, LaserGroup } from "./laser.js";
-import spaceship from "@/assets/images/Spaceship-2.svg";
-import backgroundimage from "@/assets/images/background.png";
-import laser from "@/assets/images/Laser.png";
-import trash from "@/assets/images/box-trash.svg";
-import trash2 from "@/assets/images/camera-trash.svg";
-import trash3 from "@/assets/images/panel-trash.svg";
-import trash4 from "@/assets/images/panel-trash2.svg";
-import explosion from "@/assets/images/explosion.gif";
-import { gameStore } from "../stores/defaultStore";
+import Phaser from 'phaser';
+import { LaserGroup } from './laser.js';
+import spaceship from '@/assets/images/Spaceship-2.svg';
+import backgroundimage from '@/assets/images/background.png';
+import laser from '@/assets/images/Laser.png';
+import trash from '@/assets/images/box-trash.svg';
+import trash2 from '@/assets/images/camera-trash.svg';
+import trash3 from '@/assets/images/panel-trash.svg';
+import trash4 from '@/assets/images/panel-trash2.svg';
+// import explosion from "@/assets/images/explosion.gif";
+import { gameStore } from '../stores/Store';
 
 const myStore = gameStore();
+myStore.score = 0;
 
 class gameScene extends Phaser.Scene {
   constructor() {
-    super("gameScene");
+    super('gameScene');
   }
 
   preload() {
-    this.load.image("trash", trash);
-    this.load.image("trash2", trash2);
-    this.load.image("trash3", trash3);
-    this.load.image("trash4", trash4);
-    this.load.image("spaceship", spaceship);
-    this.load.image("laser", laser);
-    this.load.image("background", backgroundimage);
-    this.load.spritesheet("explosion", "explosion", {
+    this.load.image('trash', trash);
+    this.load.image('trash2', trash2);
+    this.load.image('trash3', trash3);
+    this.load.image('trash4', trash4);
+    this.load.image('spaceship', spaceship);
+    this.load.image('laser', laser);
+    this.load.image('background', backgroundimage);
+    this.load.spritesheet('explosion', 'explosion', {
       frameWidth: 64,
       frameHeight: 64,
     });
@@ -33,18 +34,14 @@ class gameScene extends Phaser.Scene {
 
   create() {
     //background
-    this.background = this.add.image(0, 0, "background");
+    this.background = this.add.image(0, 0, 'background');
     this.background.setOrigin(0, 0);
 
     //data
     this.score = 0;
 
     //ship
-    this.ship = this.physics.add.image(
-      config.width / 2,
-      config.height / 1.5,
-      "spaceship"
-    );
+    this.ship = this.physics.add.image(config.width / 2, config.height / 1.5, 'spaceship');
 
     // Laser
 
@@ -53,25 +50,35 @@ class gameScene extends Phaser.Scene {
     this.input.mouse.disableContextMenu();
 
     this.input.on(
-      "pointerdown",
+      'pointerdown',
       function () {
         this.input.mouse.requestPointerLock();
       },
-      this
+      this,
     );
 
     this.shootLaser(this.laserGroup, this.ship);
 
     this.input.on(
-      "pointermove",
+      'pointermove',
       function (pointer) {
         if (this.input.mouse.locked) {
-          this.ship.x += pointer.movementX;
-          this.ship.y += pointer.movementY;
+          if (this.ship.x + pointer.movementX < 0 || this.ship.x + pointer.movementX > config.width)
+            this.ship.x += 0;
+          else {
+            this.ship.x += pointer.movementX;
+          }
+
+          if (
+            this.ship.y + pointer.movementY < 0 ||
+            this.ship.y + pointer.movementY > config.height
+          )
+            this.ship.y += 0;
+          else this.ship.y += pointer.movementY;
 
           // Force the ship to stay on screen
-          this.ship.x = Phaser.Math.Wrap(this.ship.x, 0, game.renderer.width);
-          this.ship.y = Phaser.Math.Wrap(this.ship.y, 0, game.renderer.height);
+          // this.ship.x = Phaser.Math.Wrap(this.ship.x, 0, config.width);
+          // this.ship.y = Phaser.Math.Wrap(this.ship.y, 0, config.height);
 
           if (pointer.movementX > 0) {
             this.ship.setRotation(0.1);
@@ -84,40 +91,24 @@ class gameScene extends Phaser.Scene {
           // this.updateLockText(true);
         }
       },
-      this
+      this,
     );
 
     this.input.keyboard.on(
-      "keydown-Q",
+      'keydown-Q',
       function () {
         if (this.input.mouse.locked) {
           this.input.mouse.releasePointerLock();
         }
       },
-      this
+      this,
     );
 
     //trashes
-    this.trash = this.physics.add.image(
-      config.width - 500,
-      config.height - 500,
-      "trash"
-    );
-    this.trashtwo = this.physics.add.image(
-      config.width - 800,
-      config.height - 800,
-      "trash2"
-    );
-    this.trashthree = this.physics.add.image(
-      config.width - 1000,
-      config.height - 1000,
-      "trash3"
-    );
-    this.trashfour = this.physics.add.image(
-      config.width - 300,
-      config.height - 300,
-      "trash4"
-    );
+    this.trash = this.physics.add.image(config.width - 500, config.height - 500, 'trash');
+    this.trashtwo = this.physics.add.image(config.width - 800, config.height - 800, 'trash2');
+    this.trashthree = this.physics.add.image(config.width - 1000, config.height - 1000, 'trash3');
+    this.trashfour = this.physics.add.image(config.width - 300, config.height - 300, 'trash4');
 
     this.trash.setScale(0.8);
     this.trashtwo.setScale(0.8);
@@ -133,7 +124,7 @@ class gameScene extends Phaser.Scene {
 
     // label
 
-    this.scoreLabel = this.add.text(100, 100, "Score: " + this.score);
+    this.scoreLabel = this.add.text(100, 100, 'Score: ' + this.score);
 
     // physics
     this.physics.add.collider(
@@ -143,13 +134,13 @@ class gameScene extends Phaser.Scene {
         this.laserGroup.shootingaable = false;
         ship.destroy();
         this.resetPosition(trash);
-        
-        
+
         this.input.mouse.releasePointerLock();
+        myStore.score = this.score;
         myStore.showMenu = true;
       },
       null,
-      this
+      this,
     );
 
     this.physics.add.overlap(
@@ -159,10 +150,10 @@ class gameScene extends Phaser.Scene {
         this.resetPosition(trash);
         laser.destroy();
         this.score += 1;
-        this.scoreLabel.text = "Score: " + this.score;
+        this.scoreLabel.text = 'Score: ' + this.score;
       },
       null,
-      this
+      this,
     );
   }
 
@@ -175,7 +166,7 @@ class gameScene extends Phaser.Scene {
 
   shootLaser(laserGroup, ship) {
     // eslint-disable-next-line no-unused-vars
-    this.input.on("pointerdown", function (pointer) {
+    this.input.on('pointerdown', function (pointer) {
       // ToDo: Shoud I decrease the y position - 20 or not?
 
       laserGroup.fireLaser(ship.x, ship.y);
@@ -200,7 +191,7 @@ export const config = {
   backgroundColor: 0x000000,
   scene: [gameScene],
   physics: {
-    default: "arcade",
+    default: 'arcade',
     arcade: {
       debug: false,
       gravity: { y: 0 },

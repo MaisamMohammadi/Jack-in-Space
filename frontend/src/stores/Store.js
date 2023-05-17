@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-export const useDefaultStore = defineStore('DefaultId', {
+export const useStore = defineStore('DefaultId', {
   state: () => {
     return {
       aboutContent: 'Something about the app. (From Pinia-Store)',
@@ -12,8 +12,10 @@ export const useDefaultStore = defineStore('DefaultId', {
   getters: {},
 });
 
-export const gameStore = defineStore("gameStore", () => {
+export const gameStore = defineStore('gameStore', () => {
   const showMenu = false;
 
-  return { showMenu };
+  const score = 0;
+
+  return { showMenu, score };
 });
