@@ -75,7 +75,7 @@ const addAccount = async (req, res) => {
   if (
     isNullOrWhitespace(username) ||
     isNullOrWhitespace(password) ||
-    isNullOrUndefined(birthdate)
+    isNullOrWhitespace(birthdate)
   ) {
     res.status(400).json({
       message: 'Supplied data (username, password or birthdate) is empty'
