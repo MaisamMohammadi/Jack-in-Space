@@ -13,6 +13,10 @@ const data = ref({
 })
 const registerFeedback = ref('')
 
+const isDateValid = d => {
+  return d instanceof Date && !isNaN(d)
+}
+
 const getResult = async () => {
   await accountStore.register(data.value)
   registerFeedback.value = accountStore.accountFeedback
@@ -61,7 +65,7 @@ const getResult = async () => {
       <div class="mt-10">
         <div class="sm:col-span-3">
           <label for="user-name" class="text-lg font-medium leading-6"
-            >User name</label
+            >Username</label
           >
           <div class="mt-2">
             <input
@@ -93,7 +97,7 @@ const getResult = async () => {
 
         <div class="mt-5">
           <label for="birthdate" class="block text-lg font-medium leading-6"
-            >birthdate</label
+            >Birthdate</label
           >
           <div class="mt-2">
             <input
@@ -101,7 +105,6 @@ const getResult = async () => {
               name="birthdate"
               type="date"
               v-model="data.birthdate"
-              autocomplete="password"
               class="block h-[40px] w-[300px] rounded-md border-0 bg-white px-1 py-1.5 text-black shadow-sm focus:bg-white/50"
             />
           </div>
@@ -116,7 +119,7 @@ const getResult = async () => {
         </div>
       </router-link> -->
 
-      <div class="my-[15px] flex h-[5vh] w-[15vw] items-center px-1 py-1">
+      <div class="mt-[15px] flex h-[5vh] w-[15vw] items-center px-1 py-1">
         <span> Already have an account? </span>
         <router-link :to="{ name: 'Login' }">
           <span class="ml-5 text-[1.5em] underline">Login</span>
@@ -124,11 +127,18 @@ const getResult = async () => {
       </div>
 
       <div
+        id="birthdate-warning"
+        class="my-[4px] text-[1.25em] flex h-[5vh] w-[26vw] items-center justify-center px-1 py-1"
+        v-if="!isDateValid(new Date(data.birthdate))"
+      >
+        <span> &#9888; Birthdate currently is not valid &#x26A0; </span>
+      </div>
+
+      <div
         :class="
           registerFeedback.includes('Welcome') ? 'text-emerald-500' : 'text-red'
         "
         class="my-[8px] text-[1.75em] flex h-[5vh] w-[26vw] items-center justify-center px-1 py-1"
-        v-if="registerFeedback !== ''"
       >
         <span> {{ registerFeedback }} </span>
       </div>
@@ -159,5 +169,9 @@ const getResult = async () => {
 
 p {
   font-family: title;
+}
+
+#birthdate-warning {
+  color: yellow;
 }
 </style>
