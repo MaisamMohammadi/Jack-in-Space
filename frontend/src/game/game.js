@@ -8,6 +8,8 @@ import trash2 from '@/assets/images/camera-trash.svg';
 import trash3 from '@/assets/images/panel-trash.svg';
 import trash4 from '@/assets/images/panel-trash2.svg';
 import explosion from "@/assets/gifs/explosion.gif";
+import backgroundmusic from '@/assets/audios/BackgroundMusic-Normal.mp3';
+import laserAudio from '@/assets/audios/Laser.mp3';
 import { gameStore } from '../stores/Store';
 
 const myStore = gameStore();
@@ -30,6 +32,9 @@ class gameScene extends Phaser.Scene {
       frameWidth: 300,
       frameHeight: 300
     });
+
+    this.load.audio('music', backgroundmusic);
+    this.load.audio('laserAudio', laserAudio);
   }
 
   create() {
@@ -138,6 +143,7 @@ class gameScene extends Phaser.Scene {
         // ship.play('exlpode');
         this.resetPosition(trash);
 
+        this.music.stop();
         this.input.mouse.releasePointerLock();
         myStore.score = this.score;
         myStore.showMenu = true;
@@ -170,7 +176,11 @@ class gameScene extends Phaser.Scene {
       hideOnComplete: true
     });
     
-    
+    // audios
+    // this.music = this.sound.add('music');
+    // this.music.play();
+
+    this.laserSound = this.sound.add('laserAudio');
   }
 
   update() {
@@ -187,6 +197,8 @@ class gameScene extends Phaser.Scene {
       // ToDo: Shoud I decrease the y position - 20 or not?
 
       laserGroup.fireLaser(ship.x, ship.y);
+      
+      this.laserSound.play();
     });
   }
 
