@@ -1,3 +1,55 @@
+<script setup>
+import { ref } from 'vue'
+import axios from 'axios'
+import router from '../router/index.js'
+import bcrypt from 'bcryptjs'
+import { useAccountStore } from '../stores/accountStore.js'
+
+const accountStore = useAccountStore()
+const data = ref({
+  username: '',
+  password: '',
+  birthdate: ''
+})
+const registerFeedback = ref('')
+
+const getResult = async () => {
+  await accountStore.register(data.value)
+  registerFeedback.value = accountStore.accountFeedback
+  if (accountStore.lastRegisterResponse.status === 201) {
+    registerFeedback.value = `Welcome to Jack-In-Space, ${data.value.username}!`
+    setTimeout(() => {
+      router.push({ name: 'Home' })
+    }, 1000)
+  }
+
+  // console.log(data.value)
+  // const salt = bcrypt.genSaltSync(10)
+  // const requestBody = {
+  //   username: data.value.username,
+  //   password: bcrypt.hashSync(data.value.password, salt),
+  //   birthdate: data.value.birthdate,
+  //   salt
+  // }
+  // let result
+  // try {
+  //   result = await axios.post('http://localhost:5000/account', requestBody, {
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //   })
+  // } catch (error) {
+  //   registerFeedback.value = JSON.parse(error.request.response).message
+  // }
+  // if (result?.request.status === 201) {
+  //   registerFeedback.value = `Welcome to Jack-In-Space, ${data.value.username}!`
+  //   setTimeout(() => {
+  //     router.push({ name: 'Login' })
+  //   }, 1000)
+  // }
+}
+</script>
+
 <template>
   <div class="w-screen h-screen view">
     <div
@@ -98,50 +150,6 @@
     </router-link>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import axios from 'axios'
-import router from '../router/index.js'
-import bcrypt from 'bcryptjs'
-import { useAccountStore } from '../stores/accountStore.js'
-
-const accountStore = useAccountStore()
-console.log(accountStore.accountFeedback.value)
-const data = ref({
-  username: '',
-  password: '',
-  birthdate: ''
-})
-const registerFeedback = ref('')
-
-const getResult = async () => {
-  // console.log(data.value)
-  const salt = bcrypt.genSaltSync(10)
-  const requestBody = {
-    username: data.value.username,
-    password: bcrypt.hashSync(data.value.password, salt),
-    birthdate: data.value.birthdate,
-    salt
-  }
-  let result
-  try {
-    result = await axios.post('http://localhost:5000/account', requestBody, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-  } catch (error) {
-    registerFeedback.value = JSON.parse(error.request.response).message
-  }
-  if (result?.request.status === 201) {
-    registerFeedback.value = `Welcome to Jack-In-Space, ${data.value.username}!`
-    setTimeout(() => {
-      router.push({ name: 'Login' })
-    }, 1000)
-  }
-}
-</script>
 
 <style scoped>
 .view {

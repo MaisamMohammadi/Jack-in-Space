@@ -1,6 +1,12 @@
 <template>
   <div class="w-screen h-screen view">
-    <router-link :to="{ name: 'Login' }" class="my-[5px]">
+    <div
+      class="absolute right-[2vw] top-[2vw] flex h-[6vh] w-[15vw] items-center justify-center border-[3px] border-blue px-1 py-1 text-[35px] text-blue"
+      v-if="accountStore.currentUser.username"
+    >
+      {{ accountStore.currentUser.username }}
+    </div>
+    <router-link :to="{ name: 'Login' }" class="my-[5px]" v-else>
       <div
         class="absolute right-[2vw] top-[2vw] flex h-[6vh] w-[15vw] items-center justify-center border-[3px] border-blue px-1 py-1 text-[35px] text-blue"
       >
@@ -34,7 +40,7 @@
 import { useAccountStore } from '../stores/accountStore.js'
 const accountStore = useAccountStore()
 
-console.log(accountStore.test)
+console.log(accountStore.currentUser)
 
 const menuItems = [
   { title: 'START', link: 'Game' },
