@@ -68,7 +68,7 @@ const addAccount = async (req, res) => {
     res
       .status(500)
       .json({
-        message: 'Salt is somwhow empty. Please contact the developers'
+        message: 'Salt is somehow empty. Please contact the developers'
       })
     return
   }

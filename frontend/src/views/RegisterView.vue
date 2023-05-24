@@ -104,7 +104,10 @@ import { ref } from 'vue'
 import axios from 'axios'
 import router from '../router/index.js'
 import bcrypt from 'bcryptjs'
+import { useAccountStore } from '../stores/accountStore.js'
 
+const accountStore = useAccountStore()
+console.log(accountStore.accountFeedback.value)
 const data = ref({
   username: '',
   password: '',

@@ -1,3 +1,29 @@
+<script setup>
+import { ref } from 'vue'
+import axios from 'axios'
+import router from '../router/index.js'
+import bcrypt from 'bcryptjs'
+import { useAccountStore } from '../stores/accountStore.js'
+
+const accountStore = useAccountStore()
+const data = ref({
+  username: '',
+  password: ''
+})
+const loginFeedback = ref('')
+
+const getResult = async () => {
+  await accountStore.login(data.value)
+  loginFeedback.value = accountStore.accountFeedback
+  if (accountStore.lastLoginResponse.status === 200) {
+    loginFeedback.value = `Nice to see you again, ${data.value.username}!`
+    setTimeout(() => {
+      router.push({ name: 'Home' })
+    }, 1000)
+  }
+}
+</script>
+
 <template>
   <div class="w-screen h-screen view">
     <div
@@ -57,11 +83,13 @@
       </div>
 
       <div
-        :class="loginFeedback.includes('Nice') ? 'text-emerald-500' : 'text-red'"
+        :class="
+          loginFeedback.includes('Nice') ? 'text-emerald-500' : 'text-red'
+        "
         class="my-[8px] text-[1.75em] flex h-[5vh] w-[20vw] items-center justify-center px-1 py-1"
-        v-if="loginFeedback !== ''"
       >
         <span> {{ loginFeedback }} </span>
+        <!-- <span> {{ accountStore.accountFeedback }} </span> -->
       </div>
 
       <div
@@ -80,51 +108,6 @@
     </router-link>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import axios from 'axios'
-import router from '../router/index.js'
-import bcrypt from 'bcryptjs'
-
-const data = ref({
-  username: '',
-  password: ''
-})
-const loginFeedback = ref('')
-
-const getResult = async () => {
-  // console.log(data.value)
-  let result
-  try {
-    const user = await axios.get(
-      `http://localhost:5000/account/${data.value.username}`
-    )
-    // console.log(user)
-    const requestBody = {
-      username: data.value.username,
-      password: bcrypt.hashSync(data.value.password, user.data.salt)
-    }
-    result = await axios.patch(
-      'http://localhost:5000/account/authenticate',
-      requestBody,
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
-  } catch (error) {
-    loginFeedback.value = JSON.parse(error.request.response).message
-  }
-  if (result?.request.status === 200) {
-    loginFeedback.value = `Nice to see you again, ${data.value.username}!`
-    setTimeout(() => {
-      router.push({ name: 'Home' })
-    }, 1000)
-  }
-}
-</script>
 
 <style scoped>
 .view {
