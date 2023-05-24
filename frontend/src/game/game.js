@@ -225,10 +225,10 @@ class gameScene extends Phaser.Scene {
   }
 
   update() {
-    this.moveTrash(this.trash, 2);
-    this.moveTrash(this.trashtwo, 5);
-    this.moveTrash(this.trashthree, 3);
-    this.moveTrash(this.trashfour, 4);
+    this.moveTrash(this.trash, 1);
+    this.moveTrash(this.trashtwo, 4);
+    this.moveTrash(this.trashthree, 2);
+    this.moveTrash(this.trashfour, 3);
 
   }
 
