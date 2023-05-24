@@ -26,7 +26,10 @@ class gameScene extends Phaser.Scene {
     this.load.image('spaceship', spaceship);
     this.load.image('laser', laser);
     this.load.image('background', backgroundimage);
-    this.load.image('explosion', explosion);
+    this.load.spritesheet('explosion', explosion, {
+      frameWidth: 300,
+      frameHeight: 300
+    });
   }
 
   create() {
@@ -38,7 +41,7 @@ class gameScene extends Phaser.Scene {
     this.score = 0;
 
     //ship
-    this.ship = this.physics.add.image(config.width / 2, config.height / 1.5, 'spaceship');
+    this.ship = this.physics.add.sprite(config.width / 2, config.height / 1.5, 'spaceship');
 
     // Laser
 
@@ -102,10 +105,10 @@ class gameScene extends Phaser.Scene {
     );
 
     //trashes
-    this.trash = this.physics.add.image(config.width - 500, config.height - 500, 'trash');
-    this.trashtwo = this.physics.add.image(config.width - 800, config.height - 800, 'trash2');
-    this.trashthree = this.physics.add.image(config.width - 1000, config.height - 1000, 'trash3');
-    this.trashfour = this.physics.add.image(config.width - 300, config.height - 300, 'trash4');
+    this.trash = this.physics.add.sprite(config.width - 500, config.height - 500, 'trash');
+    this.trashtwo = this.physics.add.sprite(config.width - 800, config.height - 800, 'trash2');
+    this.trashthree = this.physics.add.sprite(config.width - 1000, config.height - 1000, 'trash3');
+    this.trashfour = this.physics.add.sprite(config.width - 300, config.height - 300, 'trash4');
 
     this.trash.setScale(0.8);
     this.trashtwo.setScale(0.8);
@@ -122,6 +125,7 @@ class gameScene extends Phaser.Scene {
     // label
 
     this.scoreLabel = this.add.text(100, 100, 'Score: ' + this.score);
+    this.scoreLabel.setScale(1.5, 1.5);
 
     // physics
     this.physics.add.collider(
@@ -130,6 +134,8 @@ class gameScene extends Phaser.Scene {
       function (ship, trash) {
         this.laserGroup.shootingaable = false;
         ship.destroy();
+        // ship.setTexture('explosion');
+        // ship.play('exlpode');
         this.resetPosition(trash);
 
         this.input.mouse.releasePointerLock();
@@ -153,6 +159,17 @@ class gameScene extends Phaser.Scene {
       this,
     );
 
+    //animation
+    // this.explosion = this.add.sprite(300, 300, 'explosion');
+
+    this.anims.create({
+      key: 'explode',
+      frames: this.anims.generateFrameNumbers('explosion'),
+      frameRate: 14, // Set the desired frame rate
+      repeat: 0, // Repeat the animation indefinitely
+      hideOnComplete: true
+    });
+    
     
   }
 
@@ -161,6 +178,7 @@ class gameScene extends Phaser.Scene {
     this.moveTrash(this.trashtwo, 5);
     this.moveTrash(this.trashthree, 3);
     this.moveTrash(this.trashfour, 4);
+
   }
 
   shootLaser(laserGroup, ship) {

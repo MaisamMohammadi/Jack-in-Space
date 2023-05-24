@@ -18,6 +18,7 @@
         Quit
       </div></RouterLink
     >
+    <p>Tip: theres no mousecursor, press Q</p>
   </div>
 </template>
 
