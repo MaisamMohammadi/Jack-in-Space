@@ -10,6 +10,8 @@ import trash4 from '@/assets/images/panel-trash2.svg';
 import explosion from "@/assets/gifs/explosion.gif";
 import backgroundmusic from '@/assets/audios/BackgroundMusic-Normal.mp3';
 import laserAudio from '@/assets/audios/Laser.mp3';
+import spaceshipDestroyedAudio from "@/assets/audios/spaceship-Hit.mp3";
+import trashCollectedAudio from "@/assets/audios/CollectGrabage.mp3";
 import { gameStore } from '../stores/Store';
 
 const myStore = gameStore();
@@ -35,18 +37,41 @@ class gameScene extends Phaser.Scene {
 
     this.load.audio('music', backgroundmusic);
     this.load.audio('laserAudio', laserAudio);
+    this.load.audio("spaceshipDestroyedAudio", spaceshipDestroyedAudio);
+    this.load.audio("trashCollectedAudio", trashCollectedAudio);
   }
 
   create() {
     //background
-    this.background = this.add.image(0, 0, 'background');
+    this.background = this.add.image(0, 0, "background");
     this.background.setOrigin(0, 0);
 
     //data
     this.score = 0;
 
     //ship
-    this.ship = this.physics.add.sprite(config.width / 2, config.height / 1.5, 'spaceship');
+    this.ship = this.physics.add.sprite(
+      config.width / 2,
+      config.height / 1.5,
+      "spaceship"
+    );
+
+    // audios
+    this.music = this.sound.add('music');
+    this.musicconfig = {
+      mute: false,
+      volume: 0.25,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 0
+    };
+    this.music.play(this.musicconfig);
+
+    this.laserSound = this.sound.add("laserAudio");
+    this.trashSound = this.sound.add("trashCollectedAudio");
+    this.shipSound = this.sound.add("spaceshipDestroyedAudio");
 
     // Laser
 
@@ -55,20 +80,23 @@ class gameScene extends Phaser.Scene {
     this.input.mouse.disableContextMenu();
 
     this.input.on(
-      'pointerdown',
+      "pointerdown",
       function () {
         this.input.mouse.requestPointerLock();
       },
-      this,
+      this
     );
 
-    this.shootLaser(this.laserGroup, this.ship);
+    this.shootLaser(this.laserGroup, this.ship, this.laserSound);
 
     this.input.on(
-      'pointermove',
+      "pointermove",
       function (pointer) {
         if (this.input.mouse.locked) {
-          if (this.ship.x + pointer.movementX < 0 || this.ship.x + pointer.movementX > config.width)
+          if (
+            this.ship.x + pointer.movementX < 0 ||
+            this.ship.x + pointer.movementX > config.width
+          )
             this.ship.x += 0;
           else {
             this.ship.x += pointer.movementX;
@@ -96,24 +124,40 @@ class gameScene extends Phaser.Scene {
           // this.updateLockText(true);
         }
       },
-      this,
+      this
     );
 
     this.input.keyboard.on(
-      'keydown-Q',
+      "keydown-Q",
       function () {
         if (this.input.mouse.locked) {
           this.input.mouse.releasePointerLock();
         }
       },
-      this,
+      this
     );
 
     //trashes
-    this.trash = this.physics.add.sprite(config.width - 500, config.height - 500, 'trash');
-    this.trashtwo = this.physics.add.sprite(config.width - 800, config.height - 800, 'trash2');
-    this.trashthree = this.physics.add.sprite(config.width - 1000, config.height - 1000, 'trash3');
-    this.trashfour = this.physics.add.sprite(config.width - 300, config.height - 300, 'trash4');
+    this.trash = this.physics.add.sprite(
+      config.width - 500,
+      config.height - 500,
+      "trash"
+    );
+    this.trashtwo = this.physics.add.sprite(
+      config.width - 800,
+      config.height - 800,
+      "trash2"
+    );
+    this.trashthree = this.physics.add.sprite(
+      config.width - 1000,
+      config.height - 1000,
+      "trash3"
+    );
+    this.trashfour = this.physics.add.sprite(
+      config.width - 300,
+      config.height - 300,
+      "trash4"
+    );
 
     this.trash.setScale(0.8);
     this.trashtwo.setScale(0.8);
@@ -129,7 +173,7 @@ class gameScene extends Phaser.Scene {
 
     // label
 
-    this.scoreLabel = this.add.text(100, 100, 'Score: ' + this.score);
+    this.scoreLabel = this.add.text(100, 100, "Score: " + this.score);
     this.scoreLabel.setScale(1.5, 1.5);
 
     // physics
@@ -143,13 +187,15 @@ class gameScene extends Phaser.Scene {
         // ship.play('exlpode');
         this.resetPosition(trash);
 
+        this.shipSound.play({volume: 0.5});
         this.music.stop();
+        
         this.input.mouse.releasePointerLock();
         myStore.score = this.score;
         myStore.showMenu = true;
       },
       null,
-      this,
+      this
     );
 
     this.physics.add.overlap(
@@ -157,30 +203,25 @@ class gameScene extends Phaser.Scene {
       this.laserGroup,
       function (trash, laser) {
         this.resetPosition(trash);
+        this.trashSound.play({volume: 0.5});
         laser.destroy();
         this.score += 1;
-        this.scoreLabel.text = 'Score: ' + this.score;
+        this.scoreLabel.text = "Score: " + this.score;
       },
       null,
-      this,
+      this
     );
 
     //animation
     // this.explosion = this.add.sprite(300, 300, 'explosion');
 
     this.anims.create({
-      key: 'explode',
-      frames: this.anims.generateFrameNumbers('explosion'),
+      key: "explode",
+      frames: this.anims.generateFrameNumbers("explosion"),
       frameRate: 14, // Set the desired frame rate
       repeat: 0, // Repeat the animation indefinitely
-      hideOnComplete: true
+      hideOnComplete: true,
     });
-    
-    // audios
-    // this.music = this.sound.add('music');
-    // this.music.play();
-
-    this.laserSound = this.sound.add('laserAudio');
   }
 
   update() {
@@ -191,14 +232,13 @@ class gameScene extends Phaser.Scene {
 
   }
 
-  shootLaser(laserGroup, ship) {
+  shootLaser(laserGroup, ship, sound) {
     // eslint-disable-next-line no-unused-vars
     this.input.on('pointerdown', function (pointer) {
       // ToDo: Shoud I decrease the y position - 20 or not?
 
       laserGroup.fireLaser(ship.x, ship.y);
-      
-      this.laserSound.play();
+      sound.play({volume: 0.5});
     });
   }
 
