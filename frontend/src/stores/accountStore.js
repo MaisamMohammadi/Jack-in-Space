@@ -10,6 +10,18 @@ export const useAccountStore = defineStore('accountStore', () => {
   const lastLoginResponse = ref([])
   const lastRegisterResponse = ref([])
   const accountFeedback = ref('')
+  const invalidAccount = ref(false)
+
+  ;(async () => {
+    const user = await axios.get(
+      `http://localhost:5000/account/${currentUser.value.id}`
+    )
+    if (user.data.id !== currentUser.value.id) {
+      currentUser.value = {}
+      window.sessionStorage.removeItem('currentUser')
+      invalidAccount.value = true
+    }
+  })()
 
   const login = async data => {
     const { username, password } = data
@@ -34,6 +46,7 @@ export const useAccountStore = defineStore('accountStore', () => {
       'currentUser',
       JSON.stringify(currentUser.value)
     )
+    invalidAccount.value = true
   }
   const register = async data => {
     const { username, password, birthdate } = data
@@ -60,6 +73,7 @@ export const useAccountStore = defineStore('accountStore', () => {
       'currentUser',
       JSON.stringify(currentUser.value)
     )
+    invalidAccount.value = true
   }
 
   return {
@@ -67,6 +81,7 @@ export const useAccountStore = defineStore('accountStore', () => {
     lastLoginResponse,
     lastRegisterResponse,
     accountFeedback,
+    // invalidAccount,
     login,
     register
   }
