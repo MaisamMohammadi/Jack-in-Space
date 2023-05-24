@@ -1,7 +1,8 @@
 <template>
   <div class="w-screen h-screen view">
     <div
-      class="absolute right-[2vw] top-[2vw] flex h-[6vh] w-[15vw] items-center justify-center border-[3px] border-blue px-1 py-1 text-[35px] text-blue"
+      @click="showAccountOptions()"
+      class="cursor-pointer absolute right-[2vw] top-[2vw] flex h-[6vh] w-[15vw] items-center justify-center border-[3px] border-blue px-1 py-1 text-[35px] text-blue"
       v-if="accountStore.currentUser.username"
     >
       {{ accountStore.currentUser.username }}
@@ -42,12 +43,16 @@
     </div>
     <!-- <AlertAccountInvalidComp v-if="accountStore.invalidAccount" /> -->
     <AlertAccountGuestComp v-if="warnGuest" />
+    <AccountOptionsComp
+      v-if="accountOptionsShowing"
+    />
   </div>
 </template>
 
 <script setup>
 import AlertAccountInvalidComp from '../components/AlertAccountInvalidComp.vue'
 import AlertAccountGuestComp from '../components/AlertAccountGuestComp.vue'
+import AccountOptionsComp from '../components/AccountOptionsComp.vue'
 import { useAccountStore } from '../stores/accountStore.js'
 import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
@@ -58,6 +63,7 @@ console.log(accountStore.currentUser)
 const router = useRouter()
 
 const warnGuest = ref(false)
+const accountOptionsShowing = ref(false)
 
 const tryPlay = () => {
   if (!accountStore.currentUser.username) {
@@ -65,6 +71,10 @@ const tryPlay = () => {
   } else {
     router.push({ name: 'Game' })
   }
+}
+
+const showAccountOptions = () => {
+  accountOptionsShowing.value = !accountOptionsShowing.value
 }
 
 const menuItems = [
