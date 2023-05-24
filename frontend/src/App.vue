@@ -27,7 +27,7 @@ import { RouterView } from 'vue-router'
   cursor: pointer;
 }
 
-a:hover,
+a div:hover,
 .cursor-pointer:hover {
   transform: scale(1.1);
 }
