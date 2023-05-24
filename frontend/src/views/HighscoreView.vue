@@ -29,13 +29,15 @@
             >
               <td class="px-4 py-2 whitespace-nowrap">
                 {{
-                  rankingList.indexOf(item) + 1 === rankingList.length
-                    ? rankingList.indexOf(
-                        rankingList.find(
-                          user =>
-                            user.name === accountStore.currentUser.username
-                        )
-                      ) + 1
+                  accountStore.currentUser.username
+                    ? rankingList.indexOf(item) + 1 === rankingList.length
+                      ? rankingList.indexOf(
+                          rankingList.find(
+                            user =>
+                              user.name === accountStore.currentUser.username
+                          )
+                        ) + 1
+                      : rankingList.indexOf(item) + 1
                     : rankingList.indexOf(item) + 1
                 }}
               </td>
