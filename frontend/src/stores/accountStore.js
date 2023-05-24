@@ -4,7 +4,9 @@ import axios from 'axios'
 import bcrypt from 'bcryptjs'
 
 export const useAccountStore = defineStore('accountStore', () => {
-  const currentUser = ref({})
+  // const currentUser = ref({})
+  const currentUser =
+    JSON.parse(window.sessionStorage.getItem('currentUser')) ?? ref({})
   const lastLoginResponse = ref([])
   const lastRegisterResponse = ref([])
   const accountFeedback = ref('')
@@ -27,7 +29,11 @@ export const useAccountStore = defineStore('accountStore', () => {
     }
     lastLoginResponse.value = result
     accountFeedback.value = ''
-    currentUser.value = user.data
+    currentUser.value = { id: user.data.id, username: user.data.username }
+    window.sessionStorage.setItem(
+      'currentUser',
+      JSON.stringify(currentUser.value)
+    )
   }
   const register = async data => {
     const { username, password, birthdate } = data
@@ -49,7 +55,11 @@ export const useAccountStore = defineStore('accountStore', () => {
     lastRegisterResponse.value = result
     accountFeedback.value = ''
     const user = await axios.get(`http://localhost:5000/account/${username}`)
-    currentUser.value = user.data
+    currentUser.value = { id: user.data.id, username: user.data.username }
+    window.sessionStorage.setItem(
+      'currentUser',
+      JSON.stringify(currentUser.value)
+    )
   }
 
   return {
