@@ -5,23 +5,25 @@ import bcrypt from 'bcryptjs'
 
 export const useAccountStore = defineStore('accountStore', () => {
   // const currentUser = ref({})
-  const currentUser =
-    JSON.parse(window.sessionStorage.getItem('currentUser')) ?? ref({})
+  const currentUser = ref({})
+  if (window.sessionStorage.getItem('currentUser')) {
+    currentUser.value = JSON.parse(window.sessionStorage.getItem('currentUser'))
+  }
   const lastLoginResponse = ref([])
   const lastRegisterResponse = ref([])
   const accountFeedback = ref('')
-  const invalidAccount = ref(false)
+  // const invalidAccount = ref(false)
 
-  ;(async () => {
-    const user = await axios.get(
-      `http://localhost:5000/account/${currentUser.value.id}`
-    )
-    if (user.data.id !== currentUser.value.id) {
-      currentUser.value = {}
-      window.sessionStorage.removeItem('currentUser')
-      invalidAccount.value = true
-    }
-  })()
+  // ;(async () => {
+  //   const user = await axios.get(
+  //     `http://localhost:5000/account/${currentUser.value.id}`
+  //   )
+  //   if (user.data.id !== currentUser.value.id) {
+  //     currentUser.value = {}
+  //     window.sessionStorage.removeItem('currentUser')
+  //     invalidAccount.value = true
+  //   }
+  // })()
 
   const login = async data => {
     const { username, password } = data
@@ -46,7 +48,11 @@ export const useAccountStore = defineStore('accountStore', () => {
       'currentUser',
       JSON.stringify(currentUser.value)
     )
-    invalidAccount.value = true
+    // invalidAccount.value = true
+  }
+  const logout = () => {
+    currentUser.value = {}
+    window.sessionStorage.removeItem('currentUser')
   }
   const register = async data => {
     const { username, password, birthdate } = data
@@ -73,7 +79,7 @@ export const useAccountStore = defineStore('accountStore', () => {
       'currentUser',
       JSON.stringify(currentUser.value)
     )
-    invalidAccount.value = true
+    // invalidAccount.value = true
   }
 
   return {
@@ -83,6 +89,7 @@ export const useAccountStore = defineStore('accountStore', () => {
     accountFeedback,
     // invalidAccount,
     login,
+    logout,
     register
   }
 })
