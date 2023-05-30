@@ -5,9 +5,11 @@ import bcrypt from 'bcryptjs'
 
 export const useAccountStore = defineStore('accountStore', () => {
   // const currentUser = ref({})
-  const currentUser = ref({})
+  const currentUserHashed = ref({})
   if (window.sessionStorage.getItem('currentUser')) {
-    currentUser.value = JSON.parse(window.sessionStorage.getItem('currentUser'))
+    currentUserHashed.value = JSON.parse(
+      window.sessionStorage.getItem('currentUser')
+    )
   }
   const lastLoginResponse = ref([])
   const lastRegisterResponse = ref([])
@@ -43,15 +45,18 @@ export const useAccountStore = defineStore('accountStore', () => {
     }
     lastLoginResponse.value = result
     accountFeedback.value = ''
-    currentUser.value = { id: user.data.id, username: user.data.username }
+    currentUserHashed.value = {
+      id: bcrypt.hashSync(user.data.id.toString(), user.data.salt),
+      username: user.data.username
+    }
     window.sessionStorage.setItem(
       'currentUser',
-      JSON.stringify(currentUser.value)
+      JSON.stringify(currentUserHashed.value)
     )
     // invalidAccount.value = true
   }
   const logout = () => {
-    currentUser.value = {}
+    currentUserHashed.value = {}
     window.sessionStorage.removeItem('currentUser')
   }
   const register = async data => {
@@ -74,22 +79,47 @@ export const useAccountStore = defineStore('accountStore', () => {
     lastRegisterResponse.value = result
     accountFeedback.value = ''
     const user = await axios.get(`http://localhost:5000/account/${username}`)
-    currentUser.value = { id: user.data.id, username: user.data.username }
+    // currentUserHashed.value = { id: user.data.id, username: user.data.username }
+    currentUserHashed.value = {
+      id: bcrypt.hashSync(user.data.id.toString(), user.data.salt),
+      username: user.data.username
+    }
     window.sessionStorage.setItem(
-      'currentUser',
-      JSON.stringify(currentUser.value)
+      'currentUserHashed',
+      JSON.stringify(currentUserHashed.value)
     )
     // invalidAccount.value = true
   }
+  const updateScore = async highscore => {
+    const savedHashedID = currentUserHashed.value.id
+    const user = await axios.get(`http://localhost:5000/account/${currentUserHashed.value.username}`)
+    const { id } = user.data
+    let hashedID
+    try {
+      hashedID = bcrypt.hashSync(id?.toString(), user.data.salt)
+    } catch (error) {
+      // console.error(error)
+      return false
+    }
+    if (savedHashedID !== hashedID) {
+      return false
+    }
+    const result = await axios.patch(`http://localhost:5000/account/${id}/highscore`, {
+      highscore
+    })
+    console.log(result)
+    return true
+  }
 
   return {
-    currentUser,
+    currentUser: currentUserHashed,
     lastLoginResponse,
     lastRegisterResponse,
     accountFeedback,
     // invalidAccount,
     login,
     logout,
-    register
+    register,
+    updateScore
   }
 })

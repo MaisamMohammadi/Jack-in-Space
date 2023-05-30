@@ -2,8 +2,13 @@
   <div
     class="absolute my-[5%] ml-[35vw] mt-[35vh] flex h-[30vh] w-[30vw] flex-col items-center justify-center rounded-xl bg-circle/50 text-xl"
   >
-
     <p>Score: {{ myStore.score }}</p>
+    <p class="italic text-emerald-500" v-if="myStore.wasScoreSaved">
+      Saved!
+    </p>
+    <p class="italic text.red" v-else>
+      Not Saved.
+    </p>
     <RouterLink :to="{ name: 'Game' }" @click="reload"
       ><div
         class="my-[15px] flex h-[6vh] w-[15vw] items-center justify-center border-[3px] border-blue px-1 py-1 text-[35px] text-blue"
@@ -23,21 +28,21 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
-import { gameStore } from '../stores/Store';
+import { RouterLink } from 'vue-router'
+import { gameStore } from '../stores/Store'
 
-const myStore = gameStore();
+const myStore = gameStore()
 
 const reload = () => {
-  myStore.showMenu = false;
-  location.reload();
-};
+  myStore.showMenu = false
+  location.reload()
+}
 
-defineEmits(['destroyGame']);
+defineEmits(['destroyGame'])
 </script>
 
 <style scoped>
-p{
+p {
   font-family: overwatch;
 }
 </style>
