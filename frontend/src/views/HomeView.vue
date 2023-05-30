@@ -14,9 +14,7 @@
         LOGIN
       </div>
     </router-link>
-    <div
-      class="w-[40vw] h-[40vw] bg-circle/50 absolute left-[30vw] top-[12vh] px-auto rounded-full border-[1vw] border-blue"
-    >
+    <div class="w-[40vw] h-[40vw] bg-circle/50 absolute left-[30vw] top-[12vh] px-auto rounded-full">
       <p class="text-center text-[100px] mt-[10%]">Jack in Space</p>
       <div class="flex flex-col items-center text-xl my-[5%]">
         <!-- the menu -->
