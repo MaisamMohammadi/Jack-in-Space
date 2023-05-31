@@ -110,6 +110,13 @@ export const useAccountStore = defineStore('accountStore', () => {
     console.log(result)
     return true
   }
+  const getHighscore = async () => {
+    if (!currentUserHashed.value.username) {
+      return -1
+    }
+    const user = await axios.get(`http://localhost:5000/account/${currentUserHashed.value.username}`)
+    return user.data.highscore
+  }
 
   return {
     currentUser: currentUserHashed,
@@ -120,6 +127,7 @@ export const useAccountStore = defineStore('accountStore', () => {
     login,
     logout,
     register,
-    updateScore
+    updateScore,
+    getHighscore
   }
 })

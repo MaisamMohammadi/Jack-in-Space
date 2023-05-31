@@ -14,8 +14,14 @@ export const useStore = defineStore('DefaultId', {
 
 export const gameStore = defineStore('gameStore', () => {
   const showMenu = false
-  const wasScoreSaved = false
   const score = 0
+  const wasScoreSaved = false
+  const newHighscoreAchieved = false
 
-  return { showMenu, wasScoreSaved, score }
+  return {
+    showMenu,
+    score,
+    wasScoreSaved,
+    newHighscoreAchieved
+  }
 })

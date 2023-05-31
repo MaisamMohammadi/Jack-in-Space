@@ -13,7 +13,7 @@ import laserAudio from '@/assets/audios/Laser.mp3'
 import spaceshipDestroyedAudio from '@/assets/audios/spaceship-Hit.mp3'
 import trashCollectedAudio from '@/assets/audios/CollectGrabage.mp3'
 import { gameStore } from '../stores/Store'
-import { useAccountStore } from '../stores/AccountStore'
+import { useAccountStore } from '../stores/accountStore'
 
 const accountStore = useAccountStore()
 const myStore = gameStore()
@@ -195,8 +195,13 @@ class gameScene extends Phaser.Scene {
         this.input.mouse.releasePointerLock()
         myStore.score = this.score
         myStore.showMenu = true
-        const result = await accountStore.updateScore(myStore.score)
-        myStore.wasScoreSaved = result
+        const highscore = await accountStore.getHighscore()
+        if (highscore !== -1 && highscore < this.score) {
+          await accountStore.updateScore(myStore.score)
+          myStore.newHighscoreAchieved = true
+        } else {
+          myStore.newHighscoreAchieved = false
+        }
       },
       null,
       this
@@ -238,7 +243,7 @@ class gameScene extends Phaser.Scene {
   shootLaser (laserGroup, ship, sound) {
     // eslint-disable-next-line no-unused-vars
     this.input.on('pointerdown', function (pointer) {
-      // ToDo: Shoud I decrease the y position - 20 or not?
+      // ToDo: Should I decrease the y position - 20 or not?
 
       laserGroup.fireLaser(ship.x, ship.y)
       sound.play({ volume: 0.5 })
