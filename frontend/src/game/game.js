@@ -90,7 +90,7 @@ class gameScene extends Phaser.Scene {
     )
 
     this.shootLaser(this.laserGroup, this.ship, this.laserSound)
-
+      this.x = this.sound.add
     this.input.on(
       'pointermove',
       function (pointer) {
@@ -234,15 +234,11 @@ class gameScene extends Phaser.Scene {
   }
 
   update () {
-    const TRASH_SPEED_BOX = 1
-    const TRASH_SPEED_CAMERA = 4
-    const TRASH_SPEED_PANEL1 = 2
-    const TRASH_SPEED_PANEL2 = 3
     const multiplier = 1 + this.score / 100
-    this.moveTrash(this.trash, TRASH_SPEED_BOX * multiplier)
-    this.moveTrash(this.trashtwo, TRASH_SPEED_CAMERA * multiplier)
-    this.moveTrash(this.trashthree, TRASH_SPEED_PANEL1 * multiplier)
-    this.moveTrash(this.trashfour, TRASH_SPEED_PANEL2 * multiplier)
+    this.moveTrash(this.trash, 1 * multiplier)
+    this.moveTrash(this.trashtwo, 2 * multiplier)
+    this.moveTrash(this.trashthree, 3 * multiplier)
+    this.moveTrash(this.trashfour, 4 * multiplier)
   }
 
   shootLaser (laserGroup, ship, sound) {
