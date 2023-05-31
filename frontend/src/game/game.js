@@ -234,10 +234,15 @@ class gameScene extends Phaser.Scene {
   }
 
   update () {
-    this.moveTrash(this.trash, 1)
-    this.moveTrash(this.trashtwo, 4)
-    this.moveTrash(this.trashthree, 2)
-    this.moveTrash(this.trashfour, 3)
+    const TRASH_SPEED_BOX = 1
+    const TRASH_SPEED_CAMERA = 4
+    const TRASH_SPEED_PANEL1 = 2
+    const TRASH_SPEED_PANEL2 = 3
+    const multiplier = 1 + this.score / 100
+    this.moveTrash(this.trash, TRASH_SPEED_BOX * multiplier)
+    this.moveTrash(this.trashtwo, TRASH_SPEED_CAMERA * multiplier)
+    this.moveTrash(this.trashthree, TRASH_SPEED_PANEL1 * multiplier)
+    this.moveTrash(this.trashfour, TRASH_SPEED_PANEL2 * multiplier)
   }
 
   shootLaser (laserGroup, ship, sound) {
@@ -273,6 +278,11 @@ export const config = {
       debug: false,
       gravity: { y: 0 }
     }
+  },
+  scale: {
+    mode: Phaser.Scale.RESIZE,
+    parent: 'phaser-game',
+    autoCenter: Phaser.Scale.CENTER_BOTH
   }
 }
 
