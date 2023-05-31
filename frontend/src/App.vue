@@ -4,11 +4,9 @@
       <RouterView></RouterView>
     </div>
   </div>
-  
 </template>
 <script setup>
-import { RouterView } from 'vue-router';
-
+import { RouterView } from 'vue-router'
 </script>
 <style>
 @font-face {
@@ -21,11 +19,16 @@ import { RouterView } from 'vue-router';
   src: url(./assets/fonts/SpaceGame-ywxX2.ttf);
 }
 
-.view{
+.view {
   font-family: overwatch;
 }
 
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
+}
+
+a div:hover,
+.cursor-pointer:hover {
+  transform: scale(1.1);
 }
 </style>
