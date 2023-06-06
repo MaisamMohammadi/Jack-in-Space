@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { LaserGroup } from './laser.js'
+import { Explosion } from './explosion.js'
 import spaceship from '@/assets/images/Spaceship-2.svg'
 import backgroundimage from '@/assets/images/background.png'
 import laser from '@/assets/images/Laser.png'
@@ -62,6 +63,7 @@ class gameScene extends Phaser.Scene {
       'spaceship'
     )
 
+    // this.ship.alpha = 0.5;
     // audios
     this.music = this.sound.add('music')
     this.musicconfig = {
@@ -146,22 +148,22 @@ class gameScene extends Phaser.Scene {
     // trashes
     this.trash = this.physics.add.sprite(
       config.width - 500,
-      config.height - 500,
+      0,
       'trash'
     )
     this.trashtwo = this.physics.add.sprite(
       config.width - 800,
-      config.height - 800,
+      0,
       'trash2'
     )
     this.trashthree = this.physics.add.sprite(
       config.width - 1000,
-      config.height - 1000,
+      0,
       'trash3'
     )
     this.trashfour = this.physics.add.sprite(
       config.width - 300,
-      config.height - 300,
+      0,
       'trash4'
     )
 
@@ -195,7 +197,9 @@ class gameScene extends Phaser.Scene {
       this.trashgroup,
       async function (ship, trash) {
 
-        
+        this.explosion = new Explosion(this, ship.x, ship.y);
+
+        console.log(this);
         if(this.lives <= 0)
         {
           
@@ -217,13 +221,17 @@ class gameScene extends Phaser.Scene {
           this.lives -= 1;
           console.log('Ship is reseted');
         }
-        
+
+        this.resetPosition(trash);
         this.resetPositionShip(ship);
+        // if(ship.alpha < 1)
+        // {
+        //   return;
+        // }
         this.liveLabel.text = this.lives;
         
         // ship.setTexture('explosion');
         // ship.play('exlpode');
-        this.resetPosition(trash)
 
         this.shipSound.play({ volume: 0.5 })
 
@@ -253,18 +261,18 @@ class gameScene extends Phaser.Scene {
     this.anims.create({
       key: 'explode',
       frames: this.anims.generateFrameNumbers('explosion'),
-      frameRate: 14, // Set the desired frame rate
+      frameRate: 12, // Set the desired frame rate
       repeat: 0, // Repeat the animation indefinitely
-      hideOnComplete: true
+      hideOnComplete: true,
     })
   }
 
   update () {
     const multiplier = 1 + this.score / 100
     this.moveTrash(this.trash, 1 * multiplier)
-    this.moveTrash(this.trashtwo, 2 * multiplier)
-    this.moveTrash(this.trashthree, 3 * multiplier)
-    this.moveTrash(this.trashfour, 4 * multiplier)
+    this.moveTrash(this.trashtwo, 1.5 * multiplier)
+    this.moveTrash(this.trashthree, 2 * multiplier)
+    this.moveTrash(this.trashfour, 1.7 * multiplier)
   }
 
   shootLaser (laserGroup, ship, sound) {
