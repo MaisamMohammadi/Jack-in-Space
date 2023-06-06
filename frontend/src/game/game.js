@@ -272,9 +272,7 @@ class gameScene extends Phaser.Scene {
     if (trash.y > config.height)
     {
       this.resetPosition(trash);
-      this.lives -= 1;
-      this.liveLabel.text = 'Lives: ' + this.lives;
-      if(this.lives <= 0)
+      if(this.lives < 1)
         {
           this.laserGroup.shootingaable = false;
           this.music.stop()
@@ -289,6 +287,12 @@ class gameScene extends Phaser.Scene {
             myStore.newHighscoreAchieved = false
           }
         }
+      else
+      {
+        this.lives -= 1;
+      }
+      this.liveLabel.text = 'Lives: ' + this.lives;
+
     } 
       
     trash.y += speed
