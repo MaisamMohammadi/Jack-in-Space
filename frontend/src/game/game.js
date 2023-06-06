@@ -49,8 +49,8 @@ class gameScene extends Phaser.Scene {
     this.background.setOrigin(0, 0)
 
     // data
-    this.score = 0
-
+    this.score = 0;
+    this.lives = 5;
     // ship
     this.ship = this.physics.add.sprite(
       config.width / 2,
@@ -175,33 +175,50 @@ class gameScene extends Phaser.Scene {
 
     // label
 
-    this.scoreLabel = this.add.text(100, 100, 'Score: ' + this.score)
+    this.scoreLabel = this.add.text(250, 100, 'Collected trash: ' + this.score);
     this.scoreLabel.setScale(1.5, 1.5)
+
+    this.liveLabel = this.add.text(100, 100, 'Lives: ' + this.lives);
+    this.liveLabel.setScale(1.5, 1.5);
+    
 
     // physics
     this.physics.add.collider(
       this.ship,
       this.trashgroup,
       async function (ship, trash) {
-        this.laserGroup.shootingaable = false
-        ship.destroy()
+
+        this.lives -= 1;
+        this.liveLabel.text = 'Lives: ' + this.lives;
+        if(this.lives <= 0)
+        {
+          this.laserGroup.shootingaable = false;
+          this.music.stop()
+          myStore.score = this.score
+          myStore.showMenu = true
+          const highscore = await accountStore.getHighscore()
+          if (highscore !== -1 && highscore < this.score) {
+            await accountStore.updateScore(myStore.score)
+            myStore.newHighscoreAchieved = true
+          } else {
+            myStore.newHighscoreAchieved = false
+          }
+          ship.destroy();
+        }
+        else
+        {
+          this.resetPositionShip(ship);
+          console.log('Ship is reseted');
+        }
+        
+        
         // ship.setTexture('explosion');
         // ship.play('exlpode');
         this.resetPosition(trash)
 
         this.shipSound.play({ volume: 0.5 })
-        this.music.stop()
 
         this.input.mouse.releasePointerLock()
-        myStore.score = this.score
-        myStore.showMenu = true
-        const highscore = await accountStore.getHighscore()
-        if (highscore !== -1 && highscore < this.score) {
-          await accountStore.updateScore(myStore.score)
-          myStore.newHighscoreAchieved = true
-        } else {
-          myStore.newHighscoreAchieved = false
-        }
       },
       null,
       this
@@ -215,7 +232,7 @@ class gameScene extends Phaser.Scene {
         this.trashSound.play({ volume: 0.5 })
         laser.destroy()
         this.score += 1
-        this.scoreLabel.text = 'Score: ' + this.score
+        this.scoreLabel.text = 'Collected trash: ' + this.score
       },
       null,
       this
@@ -252,7 +269,28 @@ class gameScene extends Phaser.Scene {
   }
 
   moveTrash (trash, speed) {
-    if (trash.y > config.height) this.resetPosition(trash)
+    if (trash.y > config.height)
+    {
+      this.resetPosition(trash);
+      this.lives -= 1;
+      this.liveLabel.text = 'Lives: ' + this.lives;
+      if(this.lives <= 0)
+        {
+          this.laserGroup.shootingaable = false;
+          this.music.stop()
+          this.resetPositionShip(this.ship);
+          myStore.score = this.score
+          myStore.showMenu = true
+          const highscore = accountStore.getHighscore()
+          if (highscore !== -1 && highscore < this.score) {
+            accountStore.updateScore(myStore.score)
+            myStore.newHighscoreAchieved = true
+          } else {
+            myStore.newHighscoreAchieved = false
+          }
+        }
+    } 
+      
     trash.y += speed
   }
 
@@ -260,9 +298,14 @@ class gameScene extends Phaser.Scene {
     trash.y = 0
     trash.x = Phaser.Math.Between(100, config.width - 100)
   }
+
+  resetPositionShip (ship) {
+    ship.x = (config.width / 2);
+    ship.y = (config.height / 1.5);
+  }
 }
 
-export const config = {
+export var config = {
   type: Phaser.AUTO,
   width: window.innerWidth,
   height: window.innerHeight,
