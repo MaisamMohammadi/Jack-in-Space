@@ -12,6 +12,8 @@ import backgroundmusic from '@/assets/audios/BackgroundMusic-Normal.mp3'
 import laserAudio from '@/assets/audios/Laser.mp3'
 import spaceshipDestroyedAudio from '@/assets/audios/spaceship-Hit.mp3'
 import trashCollectedAudio from '@/assets/audios/CollectGrabage.mp3'
+import live from '@/assets/images/live.png';
+import trashIcon from '@/assets/images/trash.png';
 import { gameStore } from '../stores/Store'
 import { useAccountStore } from '../stores/accountStore'
 
@@ -41,6 +43,8 @@ class gameScene extends Phaser.Scene {
     this.load.audio('laserAudio', laserAudio)
     this.load.audio('spaceshipDestroyedAudio', spaceshipDestroyedAudio)
     this.load.audio('trashCollectedAudio', trashCollectedAudio)
+    this.load.image('live', live);
+    this.load.image('trashIcon', trashIcon);
   }
 
   create () {
@@ -175,11 +179,14 @@ class gameScene extends Phaser.Scene {
 
     // label
 
-    this.scoreLabel = this.add.text(250, 100, 'Collected trash: ' + this.score);
-    this.scoreLabel.setScale(1.5, 1.5)
-
-    this.liveLabel = this.add.text(100, 100, 'Lives: ' + this.lives);
-    this.liveLabel.setScale(1.5, 1.5);
+    this.trashIcon = this.add.image(230, 100, 'trashIcon');
+    this.trashIcon.setScale(0.15, 0.15);
+    this.scoreLabel = this.add.text(270, 85, this.score);
+    this.scoreLabel.setScale(2, 2)
+    this.live = this.add.image(100, 100, 'live');
+    this.live.setScale(0.15, 0.15);
+    this.liveLabel = this.add.text(140, 85, this.lives);
+    this.liveLabel.setScale(2, 2);
     
 
     // physics
@@ -189,8 +196,8 @@ class gameScene extends Phaser.Scene {
       async function (ship, trash) {
 
         this.lives -= 1;
-        this.liveLabel.text = 'Lives: ' + this.lives;
-        if(this.lives <= 0)
+        this.liveLabel.text = this.lives;
+        if(this.lives < 1)
         {
           this.laserGroup.shootingaable = false;
           this.music.stop()
@@ -232,7 +239,7 @@ class gameScene extends Phaser.Scene {
         this.trashSound.play({ volume: 0.5 })
         laser.destroy()
         this.score += 1
-        this.scoreLabel.text = 'Collected trash: ' + this.score
+        this.scoreLabel.text = this.score
       },
       null,
       this
@@ -291,7 +298,7 @@ class gameScene extends Phaser.Scene {
       {
         this.lives -= 1;
       }
-      this.liveLabel.text = 'Lives: ' + this.lives;
+      this.liveLabel.text = this.lives;
 
     } 
       
