@@ -195,10 +195,10 @@ class gameScene extends Phaser.Scene {
       this.trashgroup,
       async function (ship, trash) {
 
-        this.lives -= 1;
-        this.liveLabel.text = this.lives;
-        if(this.lives < 1)
+        
+        if(this.lives <= 0)
         {
+          
           this.laserGroup.shootingaable = false;
           this.music.stop()
           myStore.score = this.score
@@ -214,10 +214,12 @@ class gameScene extends Phaser.Scene {
         }
         else
         {
-          this.resetPositionShip(ship);
+          this.lives -= 1;
           console.log('Ship is reseted');
         }
         
+        this.resetPositionShip(ship);
+        this.liveLabel.text = this.lives;
         
         // ship.setTexture('explosion');
         // ship.play('exlpode');
