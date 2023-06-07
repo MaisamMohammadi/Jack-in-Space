@@ -14,7 +14,7 @@ export const useStore = defineStore('DefaultId', {
 
 export const gameStore = defineStore('gameStore', () => {
   const showMenu = false
-  const lives = 5;
+  const lives = 5
   const score = 0
   const wasScoreSaved = false
   const newHighscoreAchieved = false
