@@ -18,12 +18,14 @@ export const gameStore = defineStore('gameStore', () => {
   const score = 0
   const wasScoreSaved = false
   const newHighscoreAchieved = false
+  const goToIntro = true
 
   return {
     showMenu,
     score,
     wasScoreSaved,
     newHighscoreAchieved,
-    lives
+    lives,
+    goToIntro
   }
 })

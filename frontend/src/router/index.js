@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { gameStore } from '../stores/Store';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,6 +8,15 @@ const router = createRouter({
       path: '/',
       name: 'Home',
       component: () => import('../views/HomeView.vue'),
+      beforeEnter: (to, from, next) => {
+        const store = gameStore();
+        if (store.goToIntro) {
+          next({ name: 'Intro' });
+          store.goToIntro = false;
+        } else {
+          next();
+        }
+      },
     },
     {
       path: '/game',
@@ -32,6 +42,11 @@ const router = createRouter({
       path: '/help',
       name: 'Help',
       component: () => import('../views/HelpView.vue'),
+    },
+    {
+      path: '/intro',
+      name: 'Intro',
+      component: () => import('../views/IntroView.vue'),
     },
   ],
 });

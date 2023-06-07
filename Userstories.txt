@@ -1,0 +1,42 @@
+Als User möchte ich eine Login-Seite zur Verfügung haben, damit 
+ich mich mit meinen Daten im Spiel anmelden kann.
+
+Als Developer möchte ich die Soundeffekte des Spiels mit Soundtrap 
+machen, damit wir uns im Audio-Bereich Zeit sparen, 
+da es nicht sehr schwer zu bedienen ist und Soundtrap 
+einer großen Soundbibliothek zur Verfügung stellt.
+
+Als Developer möchte ich ein Skript für die Vorgeschichte haben, 
+damit ich Bescheid weiß, wie die Vorgeschichte sein soll und 
+bereit bin, es umzusetzen.
+
+Als Developer möchte ich, dass der Weltraumschrott richtig 
+entsorgt wird, damit die User eine Vorstellung davon bekommen, 
+wie Weltraumschrott eigentlich entsorgt werden könnte.
+
+Als User möchte ich Feedback beim Verlieren bekommen, damit ich 
+weiß, wann ich verloren habe und was ich nachher machen kann.
+
+--------------------------------------
+
+Als User möchte ich eine Login-Seite haben, auf der ich meinen 
+Benutzernamen und mein Passwort eingeben kann, um mich im Spiel 
+anzumelden, und es soll auch einen Registrierungslink geben, 
+falls ich noch keinen Account habe.
+
+Als Benutzer möchte ich meinen Highscore aktualisieren lassen 
+(falls ich als Benutzer angemeldet bin), wenn ein Game Over 
+eintritt, damit meine Leistungen korrekt erfasst und angezeigt 
+werden.
+
+Als Benutzer möchte ich die Implementierung der Highscore-Tabelle 
+im Spiel sehen, um eine visuelle Darstellung der besten erreichten 
+Punktzahlen von Benutzern zu haben, die mich dazu motiviert, 
+mein Gameplay zu verbessern und mich mit anderen zu messen.
+
+Als User möchte ich das es eine Logo für das Spiel gemacht wird  
+damit das Spiel gut erkennbar ist.
+
+Als Developer möchte ich dass das Spiel Hintergrundlieder hat, 
+damit das Spiel den Spielern nicht monoton vorkommt.
+
