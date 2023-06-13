@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { gameStore } from '../stores/Store'
+import { introStore } from '../stores/Store'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,7 +9,7 @@ const router = createRouter({
       name: 'Home',
       component: () => import('../views/HomeView.vue'),
       beforeEnter: (to, from, next) => {
-        const store = gameStore()
+        const store = introStore()
         if (store.goToIntro) {
           next({ name: 'Intro' })
           store.goToIntro = false

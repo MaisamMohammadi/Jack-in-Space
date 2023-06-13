@@ -147,22 +147,22 @@ class gameScene extends Phaser.Scene {
 
     // trashes
     this.trash = this.physics.add.sprite(
-      config.width - 500,
+      config.width / 5,
       0,
       'trash'
     )
     this.trashtwo = this.physics.add.sprite(
-      config.width - 800,
+      config.width / 5 * 4,
       0,
       'trash2'
     )
     this.trashthree = this.physics.add.sprite(
-      config.width - 1000,
+      config.width / 5 * 3,
       0,
       'trash3'
     )
     this.trashfour = this.physics.add.sprite(
-      config.width - 300,
+      config.width / 5 * 2,
       0,
       'trash4'
     )
