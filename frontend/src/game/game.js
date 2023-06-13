@@ -13,8 +13,8 @@ import backgroundmusic from '@/assets/audios/BackgroundMusic-Normal.mp3'
 import laserAudio from '@/assets/audios/Laser.mp3'
 import spaceshipDestroyedAudio from '@/assets/audios/spaceship-Hit.mp3'
 import trashCollectedAudio from '@/assets/audios/CollectGrabage.mp3'
-import live from '@/assets/images/live.png';
-import trashIcon from '@/assets/images/trash.png';
+import live from '@/assets/images/live.png'
+import trashIcon from '@/assets/images/trash.png'
 import { gameStore } from '../stores/Store'
 import { useAccountStore } from '../stores/accountStore'
 
@@ -44,8 +44,8 @@ class gameScene extends Phaser.Scene {
     this.load.audio('laserAudio', laserAudio)
     this.load.audio('spaceshipDestroyedAudio', spaceshipDestroyedAudio)
     this.load.audio('trashCollectedAudio', trashCollectedAudio)
-    this.load.image('live', live);
-    this.load.image('trashIcon', trashIcon);
+    this.load.image('live', live)
+    this.load.image('trashIcon', trashIcon)
   }
 
   create () {
@@ -54,8 +54,8 @@ class gameScene extends Phaser.Scene {
     this.background.setOrigin(0, 0)
 
     // data
-    this.score = 0;
-    this.lives = 5;
+    this.score = 0
+    this.lives = 5
     // ship
     this.ship = this.physics.add.sprite(
       config.width / 2,
@@ -96,7 +96,7 @@ class gameScene extends Phaser.Scene {
     )
 
     this.shootLaser(this.laserGroup, this.ship, this.laserSound)
-      this.x = this.sound.add
+    this.x = this.sound.add
     this.input.on(
       'pointermove',
       function (pointer) {
@@ -181,29 +181,25 @@ class gameScene extends Phaser.Scene {
 
     // label
 
-    this.trashIcon = this.add.image(230, 100, 'trashIcon');
-    this.trashIcon.setScale(0.15, 0.15);
-    this.scoreLabel = this.add.text(270, 85, this.score);
+    this.trashIcon = this.add.image(230, 100, 'trashIcon')
+    this.trashIcon.setScale(0.15, 0.15)
+    this.scoreLabel = this.add.text(270, 85, this.score)
     this.scoreLabel.setScale(2, 2)
-    this.live = this.add.image(100, 100, 'live');
-    this.live.setScale(0.15, 0.15);
-    this.liveLabel = this.add.text(140, 85, this.lives);
-    this.liveLabel.setScale(2, 2);
-    
+    this.live = this.add.image(100, 100, 'live')
+    this.live.setScale(0.15, 0.15)
+    this.liveLabel = this.add.text(140, 85, this.lives)
+    this.liveLabel.setScale(2, 2)
 
     // physics
     this.physics.add.collider(
       this.ship,
       this.trashgroup,
       async function (ship, trash) {
+        this.explosion = new Explosion(this, ship.x, ship.y)
 
-        this.explosion = new Explosion(this, ship.x, ship.y);
-
-        console.log(this);
-        if(this.lives <= 0)
-        {
-          
-          this.laserGroup.shootingaable = false;
+        console.log(this)
+        if (this.lives <= 0) {
+          this.laserGroup.shootingaable = false
           this.music.stop()
           myStore.score = this.score
           myStore.showMenu = true
@@ -214,22 +210,20 @@ class gameScene extends Phaser.Scene {
           } else {
             myStore.newHighscoreAchieved = false
           }
-          ship.destroy();
-        }
-        else
-        {
-          this.lives -= 1;
-          console.log('Ship is reseted');
+          ship.destroy()
+        } else {
+          this.lives -= 1
+          console.log('Ship is reseted')
         }
 
-        this.resetPosition(trash);
-        this.resetPositionShip(ship);
+        this.resetPosition(trash)
+        this.resetPositionShip(ship)
         // if(ship.alpha < 1)
         // {
         //   return;
         // }
-        this.liveLabel.text = this.lives;
-        
+        this.liveLabel.text = this.lives
+
         // ship.setTexture('explosion');
         // ship.play('exlpode');
 
@@ -263,7 +257,7 @@ class gameScene extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers('explosion'),
       frameRate: 12, // Set the desired frame rate
       repeat: 0, // Repeat the animation indefinitely
-      hideOnComplete: true,
+      hideOnComplete: true
     })
   }
 
@@ -286,32 +280,27 @@ class gameScene extends Phaser.Scene {
   }
 
   moveTrash (trash, speed) {
-    if (trash.y > config.height)
-    {
-      this.resetPosition(trash);
-      if(this.lives < 1)
-        {
-          this.laserGroup.shootingaable = false;
-          this.music.stop()
-          this.resetPositionShip(this.ship);
-          myStore.score = this.score
-          myStore.showMenu = true
-          const highscore = accountStore.getHighscore()
-          if (highscore !== -1 && highscore < this.score) {
-            accountStore.updateScore(myStore.score)
-            myStore.newHighscoreAchieved = true
-          } else {
-            myStore.newHighscoreAchieved = false
-          }
+    if (trash.y > config.height) {
+      this.resetPosition(trash)
+      if (this.lives < 1) {
+        this.laserGroup.shootingaable = false
+        this.music.stop()
+        this.resetPositionShip(this.ship)
+        myStore.score = this.score
+        myStore.showMenu = true
+        const highscore = accountStore.getHighscore()
+        if (highscore !== -1 && highscore < this.score) {
+          accountStore.updateScore(myStore.score)
+          myStore.newHighscoreAchieved = true
+        } else {
+          myStore.newHighscoreAchieved = false
         }
-      else
-      {
-        this.lives -= 1;
+      } else {
+        this.lives -= 1
       }
-      this.liveLabel.text = this.lives;
+      this.liveLabel.text = this.lives
+    }
 
-    } 
-      
     trash.y += speed
   }
 
@@ -321,8 +310,8 @@ class gameScene extends Phaser.Scene {
   }
 
   resetPositionShip (ship) {
-    ship.x = (config.width / 2);
-    ship.y = (config.height / 1.5);
+    ship.x = (config.width / 2)
+    ship.y = (config.height / 1.5)
   }
 }
 

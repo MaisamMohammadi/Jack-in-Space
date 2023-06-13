@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import { gameStore } from '../stores/Store';
+import { createRouter, createWebHistory } from 'vue-router'
+import { gameStore } from '../stores/Store'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,46 +9,46 @@ const router = createRouter({
       name: 'Home',
       component: () => import('../views/HomeView.vue'),
       beforeEnter: (to, from, next) => {
-        const store = gameStore();
+        const store = gameStore()
         if (store.goToIntro) {
-          next({ name: 'Intro' });
-          store.goToIntro = false;
+          next({ name: 'Intro' })
+          store.goToIntro = false
         } else {
-          next();
+          next()
         }
-      },
+      }
     },
     {
       path: '/game',
       name: 'Game',
-      component: () => import('../views/GameView.vue'),
+      component: () => import('../views/GameView.vue')
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import('../views/LoginView.vue'),
+      component: () => import('../views/LoginView.vue')
     },
     {
       path: '/register',
       name: 'Register',
-      component: () => import('../views/RegisterView.vue'),
+      component: () => import('../views/RegisterView.vue')
     },
     {
       path: '/highscore',
       name: 'Highscore',
-      component: () => import('../views/HighscoreView.vue'),
+      component: () => import('../views/HighscoreView.vue')
     },
     {
       path: '/help',
       name: 'Help',
-      component: () => import('../views/HelpView.vue'),
+      component: () => import('../views/HelpView.vue')
     },
     {
       path: '/intro',
       name: 'Intro',
-      component: () => import('../views/IntroView.vue'),
-    },
-  ],
-});
+      component: () => import('../views/IntroView.vue')
+    }
+  ]
+})
 
-export default router;
+export default router
